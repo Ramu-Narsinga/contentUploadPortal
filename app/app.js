@@ -5,13 +5,22 @@ angular.module('myApp', [
   'ngRoute',
   'ngMaterial',
   'flow',
-  'myApp.view1',
-  'myApp.view2',
-  'myApp.version',
   'genericUser'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
 
   $routeProvider.otherwise({redirectTo: '/view1'});
-}]);
+}]).
+//generic-user-service is application wide injectable
+factory('genericUserService', ["$http", function($http) {
+  // function genericUseContentrPostRequest($http) {
+  //   console.log("genericUseContentrPostRequest");
+  // }
+  return {
+      genericUseContentrPostRequest: function (contentUploadedDetails) {
+        console.log("genericUseContentrPostRequest", contentUploadedDetails);
+      }
+  };
+}]
+);

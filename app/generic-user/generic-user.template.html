@@ -15,50 +15,55 @@
 
       <md-toolbar md-scroll-shrink="">
         <div class="md-toolbar-tools">Please Upload A File</div>
+
+        <md-content layout-padding>
+          <div flow-init="{singleFile:true}">
+            <!-- flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[callthis($file)]" <div ng-show="!$flow.files.length">
+              <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" />
+            </div> -->
+            <div ng-show="$flow.files.length">
+              <img flow-img="$flow.files[0]" />
+            </div>
+            <div>
+
+              <input class="file-input" flow-btn id="select" ng-show=false>
+              <span flow-btn>
+                <md-button ng-show="!$flow.files.length" flow-file-added="fileSelected($flow, $event)" flow-files-submitted="fileUploadSubmitFunction($files, $event, $flow)" class="md-raised md-primary">Select an Image/Video</md-button>
+              </span>
+
+              <md-button ng-if="$flow.files[0].file.name" md-no-ink="$flow.files[0].file.name" class="md-primary">Uploaded File Name: {{$flow.files[0].file.name}}</md-button>
+              <br>
+              <input class="file-input" flow-btn id="change" ng-show=false>
+              <span flow-btn>
+                <md-button ng-show="$flow.files.length" class="md-raised md-accent"> Change </md-button>
+              </span>
+
+              <input class="file-input" id="cancel" ng-show=false>
+              <span>
+                <md-button ng-show="$flow.files.length" ng-click="removeImg($flow)" class="md-raised md-warn"> Remove </md-button>
+              </span>
+
+            </div>
+          </div>
+        </md-content>
       </md-toolbar>
 
-      <md-content layout-padding>
-        <div flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]" flow-init="{singleFile:true}">
-          <!-- <div ng-show="!$flow.files.length">
-            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" />
-          </div> -->
-          <div ng-show="$flow.files.length">
-            <img flow-img="$flow.files[0]" />
-          </div>
-          <div>
 
-            <input class="file-input" flow-btn id="select" ng-show=false>
-            <span flow-btn>
-              <md-button ng-show="!$flow.files.length" flow-file-added="fileSelected($flow, $event)" class="md-raised md-primary">Select image</md-button>
-            </span>
-
-            <table>
-              <tr ng-repeat="file in $flow.files">
-                <td>{{$index+1}}</td>
-                <td>{{file.name}}</td>
-                <td>{{file.msg}}</td>
-              </tr>
-            </table>
-
-            <input class="file-input" flow-btn id="change" ng-show=false>
-            <span flow-btn>
-              <md-button ng-show="$flow.files.length" class="md-raised md-accent"> Change </md-button>
-            </span>
-
-            <input class="file-input" id="cancel" ng-show=false>
-            <span>
-              <md-button ng-show="$flow.files.length" ng-click="removeImg($flow)" class="md-raised md-warn"> Remove </md-button>
-            </span>
-
-          </div>
-        </div>
-      </md-content>
     </div>
     <div class="col-md-6">
 
       <md-input-container class="md-block" flex-gt-sm="" required>
         <label>District</label>
-        <md-select ng-model="user.state">
+        <md-select ng-model="contentUploadedDetails.district">
+          <md-option ng-repeat="state in states" value="{{state.abbrev}}">
+            {{state.abbrev}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+      <br>
+      <md-input-container class="md-block" flex-gt-sm="" required>
+        <label>Constituency</label>
+        <md-select ng-model="contentUploadedDetails.constituency">
           <md-option ng-repeat="state in states" value="{{state.abbrev}}">
             {{state.abbrev}}
           </md-option>
@@ -67,14 +72,14 @@
       <br>
       <md-input-container class="md-block" required>
         <label>Tags</label>
-        <input type="text" ng-model="user.name">
+        <input type="text" ng-model="contentUploadedDetails.tags">
       </md-input-container>
       <br>
       <md-input-container class="md-block" required>
         <label>Comment</label>
-        <textarea ng-model="user.description" max-rows="4"></textarea>
+        <textarea ng-model="contentUploadedDetails.comment" max-rows="4"></textarea>
       </md-input-container>
       <br>
-      <md-button class="md-accent md-raised">Submit</md-button>
+      <md-button class="md-accent md-raised" ng-click="submitContentDetails()">Submit</md-button>
     </div>
   </div>
