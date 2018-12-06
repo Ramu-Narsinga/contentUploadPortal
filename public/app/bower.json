@@ -1,0 +1,24 @@
+{
+  "name": "ycmportal",
+  "main": "app.js",
+  "homepage": "https://github.com/angular/angular-seed",
+  "authors": [
+    "Ramu-Narsinga <ramu199611@gmail.com>"
+  ],
+  "description": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "MDBootstrap": "^4.5.15",
+    "bootstrap": "^4.1.3",
+    "angular-material": "^1.1.10",
+    "ng-flow": "~2"
+  }
+}
