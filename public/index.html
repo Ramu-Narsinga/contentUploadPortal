@@ -2,7 +2,10 @@
 <!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" ng-app="myApp" class="no-js">
+<!--<![endif]-->
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,18 +16,19 @@
   <link rel="stylesheet" href="lib/html5-boilerplate/dist/css/main.css">
   <link rel="stylesheet" href="app.css">
   <!-- Bootstrap core CSS -->
-  <link  rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Material Design Bootstrap -->
   <!-- for icons-->
-  <link  rel="stylesheet" href="bower_components/MDBootstrap/css/mdb.min.css">
+  <link rel="stylesheet" href="bower_components/MDBootstrap/css/mdb.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <!--for angular material-->
-  <link  rel="stylesheet" href="bower_components/angular-material/angular-material.min.css"></link>
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+  </link>
 
   <script src="lib/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
+
 <body>
-  <!-- <generic-user></generic-user> -->
 
   <div ng-view></div>
 
@@ -45,11 +49,17 @@
   <!--Angular Material -->
   <script src="bower_components/angular-material/angular-material.min.js"></script>
   <script src="bower_components/ng-flow/dist/ng-flow-standalone.min.js"></script>
+  <script src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script> <!-- for no html5 browsers support -->
+  <script src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
   <script src="app.js"></script>
   <script src="generic-user/generic-user.module.js"></script>
   <script src="generic-user/generic-user.component.js"></script>
+  <script src="admin-user/admin-user.module.js"></script>
+  <script src="admin-user/admin-user.component.js"></script>
+  <script src="common/genericUserService.js"></script>
   <script src="core/version/version.js"></script>
   <script src="core/version/version-directive.js"></script>
   <script src="core/version/interpolate-filter.js"></script>
 </body>
+
 </html>

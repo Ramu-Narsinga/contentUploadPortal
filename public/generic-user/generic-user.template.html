@@ -1,85 +1,82 @@
 <md-toolbar class="black" layout="row">
-  <h1 class="md-toolbar-tools thin">Content Uploading Portal</h1>
-  <span flex></span>
+  <h1 class="md-toolbar-tools thin">Content Uploading Portal
+    <span>
+      <md-button ng-click="loadUploadedContent()">View Uploads</md-button>
+    </span>
+  </h1>
 </md-toolbar>
 <br>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-6">
-      <!--
+<form name="uploadForm" action="/user/formupload" method="post" enctype="multipart/form-data" ng-hide="hideUploadContentForm">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <!--
       <md-content layout-padding>
         <md-button class="md-raised">Select file to upload</md-button>
         <div flow-file-success="$file.msg = $message" flow-files-submitted="$flow.upload()" flow-init="{target: '/upload'}">
         </div>
       </md-content> -->
 
-      <md-toolbar md-scroll-shrink="">
-        <div class="md-toolbar-tools">Please Upload A File</div>
+        <md-toolbar md-scroll-shrink="">
+          <div class="md-toolbar-tools">Please Upload A File</div>
 
-        <md-content layout-padding>
-          <div flow-init="{singleFile:true}">
-            <!-- flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[callthis($file)]" <div ng-show="!$flow.files.length">
-              <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" />
-            </div> -->
-            <div ng-show="$flow.files.length">
-              <img flow-img="$flow.files[0]" />
-            </div>
-            <div>
-
-              <input class="file-input" flow-btn id="select" ng-show=false>
-              <span flow-btn>
-                <md-button ng-show="!$flow.files.length" flow-file-added="fileSelected($flow, $event)" flow-files-submitted="fileUploadSubmitFunction($files, $event, $flow)" class="md-raised md-primary">Select an Image/Video</md-button>
-              </span>
-
-              <md-button ng-if="$flow.files[0].file.name" md-no-ink="$flow.files[0].file.name" class="md-primary">Uploaded File Name: {{$flow.files[0].file.name}}</md-button>
-              <br>
-              <input class="file-input" flow-btn id="change" ng-show=false>
-              <span flow-btn>
-                <md-button ng-show="$flow.files.length" class="md-raised md-accent"> Change </md-button>
-              </span>
-
-              <input class="file-input" id="cancel" ng-show=false>
-              <span>
-                <md-button ng-show="$flow.files.length" ng-click="removeImg($flow)" class="md-raised md-warn"> Remove </md-button>
-              </span>
-
-            </div>
-          </div>
-        </md-content>
-      </md-toolbar>
-
-
-    </div>
-    <div class="col-md-6">
-
-      <md-input-container class="md-block" flex-gt-sm="" required>
-        <label>District</label>
-        <md-select ng-model="contentUploadedDetails.district">
-          <md-option ng-repeat="state in states" value="{{state.abbrev}}">
-            {{state.abbrev}}
-          </md-option>
-        </md-select>
-      </md-input-container>
-      <br>
-      <md-input-container class="md-block" flex-gt-sm="" required>
-        <label>Constituency</label>
-        <md-select ng-model="contentUploadedDetails.constituency">
-          <md-option ng-repeat="state in states" value="{{state.abbrev}}">
-            {{state.abbrev}}
-          </md-option>
-        </md-select>
-      </md-input-container>
-      <br>
-      <md-input-container class="md-block" required>
-        <label>Tags</label>
-        <input type="text" ng-model="contentUploadedDetails.tags">
-      </md-input-container>
-      <br>
-      <md-input-container class="md-block" required>
-        <label>Comment</label>
-        <textarea ng-model="contentUploadedDetails.comment" max-rows="4"></textarea>
-      </md-input-container>
-      <br>
-      <md-button class="md-accent md-raised" ng-click="submitContentDetails()">Submit</md-button>
+          <md-content layout-padding>
+            <input type="file" ngf-select ng-model="picFile" name="file" accept="image/*" ngf-max-size="2MB" required ngf-model-invalid="errorFile">
+            <!-- <i ng-show="uploadForm.file.$error.required">*required</i><br>
+            <i ng-show="uploadForm.file.$error.maxSize">File too large
+              {{errorFile.size / 1000000|number:1}}MB: max 2M</i> -->
+            <img ng-show="uploadForm.file.$valid" ngf-thumbnail="picFile" class="thumb"> <button ng-click="picFile = null" ng-show="picFile">Remove</button>
+          </md-content>
+        </md-toolbar>
+      </div>
+      <div class="col-md-6">
+        <md-input-container class="md-block" flex-gt-sm="" required>
+          <label>District</label>
+          <md-select ng-model="contentUploadedDetails.district">
+            <md-option ng-repeat="state in states" value="{{state.abbrev}}">
+              {{state.abbrev}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <br>
+        <md-input-container class="md-block" flex-gt-sm="" required>
+          <label>Constituency</label>
+          <md-select ng-model="contentUploadedDetails.constituency">
+            <md-option ng-repeat="state in states" value="{{state.abbrev}}">
+              {{state.abbrev}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <br>
+        <md-input-container class="md-block" required>
+          <label>Tags</label>
+          <input type="text" ng-model="contentUploadedDetails.tags">
+        </md-input-container>
+        <br>
+        <md-input-container class="md-block" required>
+          <label>Comment</label>
+          <textarea ng-model="contentUploadedDetails.comment" max-rows="4"></textarea>
+        </md-input-container>
+        <br>
+        <md-button type="submit" class="md-accent md-raised" ng-disabled="!uploadForm.$valid" ng-click="submitContentDetails(picFile)">Submit</md-button>
+      </div>
     </div>
   </div>
+</form>
+
+<div class="container-fluid" ng-hide="hideUploadedContentCards">
+  <div class="row">
+    <div class="col-md-4 col-sm-12 col-xs-4" ng-repeat="content in contentUploaded">
+      <md-card>
+        <img src="card-image.png" class="md-card-image" alt="image caption">
+        <md-card-content>
+          <h2>{{content.comment}}</h2>
+          <p>{{content.district}}</p>
+        </md-card-content>
+        <md-card-footer>
+          Card footer
+        </md-card-footer>
+      </md-card>
+    </div>
+  </div>
+</div>

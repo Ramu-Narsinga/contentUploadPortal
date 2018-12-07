@@ -7,10 +7,11 @@ module('genericUser').
 component('genericUser', {
   // Note: The URL is relative to our `index.html` file
   templateUrl: 'generic-user/generic-user.template.html',
-  controller: ['$scope', '$mdToast', 'genericUserService', function GenericUserController($scope, $mdToast, genericUserService) {
+  controller: ['$scope', '$mdToast', 'Upload', 'genericUserService', function GenericUserController($scope, $mdToast, Upload, genericUserService) {
     //JSON that contains all details
     $scope.contentUploadedDetails = {};
-
+    $scope.hideUploadContentForm = false;
+    $scope.hideUploadedContentCards = true;
     //dropdown for districts
     $scope.states = ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
       'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' +
@@ -19,6 +20,24 @@ component('genericUser', {
         abbrev: state
       };
     });
+
+    $scope.loadUploadedContent = function() {
+      console.log("in loadUploadedContent");
+      $scope.hideUploadContentForm = true;
+      $scope.hideUploadedContentCards = false;
+      //to do, write service code to get all the uploaded and bind it
+      genericUserService.genericUserGetContentUploaded().then(getContentUploadedSuccess, getContentUploadedFailed);
+    }
+
+    function getContentUploadedSuccess(res) {
+      console.log("Success fully retrieved uploaded content, res", res);
+      $scope.contentUploaded = res.data;
+    }
+
+    function getContentUploadedFailed(response) {
+      console.log("Failed to retrieve uploaded content");
+      return $q.reject(response);
+    }
 
     //for taost alerts, set up toast position code
     var last = {
@@ -61,38 +80,43 @@ component('genericUser', {
       .position(pinTo);
 
     //this function gets called when a file is succesfully uploaded
-    $scope.fileUploadSubmitFunction = function($files, $event, $flow) {
-      // console.log("fileUploadSuccessFunction", $files, $event, $flow);
+    // $scope.fileAddedFunction = function() {
+      // console.log("fileAddedFunction");
       // console.log("file name", $files[0].file.name)
-      if ($files.length > 0) {
-        $scope.contentUploadedDetails.UploadedfileName = $files[0].file.name;
+      // if ($files.length > 0) {
+      //   $scope.contentUploadedDetails.UploadedfileName = $files[0].file.name;
         //split to get the extension and show toaster alert and remove incompatible file Uploaded
-        var fileExtension = $files[0].file.type.split("/");
-        console.log("fileExtension[1]", fileExtension[1]);
-      }
+      //   var fileExtension = $files[0].file.type.split("/");
+      //   console.log("fileExtension[1]", fileExtension[1]);
+      // }
 
-      if (fileExtension[1] != 'png' && fileExtension[1] != 'jpg' && fileExtension[1] != 'jpeg' && fileExtension[1] != 'gif') {
-        console.log("fileExtension is incompatible, remove the uploaded file and send toast", fileExtension[1]);
-        $flow.cancel();
-        $mdToast.show(toast).then(function(response) {
-          if (response == 'ok') {
-            alert('You clicked the \'UNDO\' action.');
-          }
-        });
-      }
-    }
-
-    // to remove uploaded image from front end, and sending $flow object
-    $scope.removeImg = function($flow) {
-      // console.log("in remove IMG", $flow);
-      $flow.cancel();
-    }
+      // if (fileExtension[1] != 'png' && fileExtension[1] != 'jpg' && fileExtension[1] != 'jpeg' && fileExtension[1] != 'gif') {
+      //   console.log("fileExtension is incompatible, remove the uploaded file and send toast", fileExtension[1]);
+      //   $flow.cancel();
+      //   $mdToast.show(toast).then(function(response) {
+      //     if (response == 'ok') {
+      //       alert('You clicked the \'UNDO\' action.');
+      //     }
+      //   });
+      // }
+    // }
 
     //this function gets called when submit is called to use a service and send a http request
-    $scope.submitContentDetails = function() {
+    $scope.submitContentDetails = function(file) {
+      console.log("file",file, $scope.picFile);
+      $scope.contentUploadedDetails.UploadedfileName = $scope.picFile.name;
+      console.log("contentUploadedDetails", $scope.contentUploadedDetails);
       //assign ng-bind data to the JSON sent in http request
       // console.log("what's in filled data", $scope.contentUploadedDetails, "$scope.comment", $scope.contentUploadedDetails.comment);
-      genericUserService.genericUseContentrPostRequest($scope.contentUploadedDetails);
+      genericUserService.genericUserContentPostRequest($scope.contentUploadedDetails).then(postRequestSuccess, postRequestError);
+    }
+
+    function postRequestSuccess(respnonse) {
+      console.log("response in component post success", response);
+    }
+
+    function postRequestError(response) {
+      console.log("error in component post request", response);
     }
 
   }]
