@@ -21,7 +21,7 @@
           <div class="md-toolbar-tools">Please Upload A File</div>
 
           <md-content layout-padding>
-            <input type="file" ngf-select ng-model="picFile" name="file" accept="image/*" ngf-max-size="2MB" required ngf-model-invalid="errorFile">
+            <input type="file" ngf-select ng-model="picFile" name="file" required">
             <!-- <i ng-show="uploadForm.file.$error.required">*required</i><br>
             <i ng-show="uploadForm.file.$error.maxSize">File too large
               {{errorFile.size / 1000000|number:1}}MB: max 2M</i> -->
@@ -58,7 +58,7 @@
           <textarea ng-model="contentUploadedDetails.comment" max-rows="4"></textarea>
         </md-input-container>
         <br>
-        <md-button type="submit" class="md-accent md-raised" ng-disabled="!uploadForm.$valid" ng-click="submitContentDetails(picFile)">Submit</md-button>
+        <md-button type="submit" class="md-accent md-raised" ng-click="submitContentDetails(picFile)">Submit</md-button>
       </div>
     </div>
   </div>

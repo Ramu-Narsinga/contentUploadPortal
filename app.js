@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+var multer = require('multer')
 var cors = require('cors');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -19,7 +20,9 @@ app.set('view engine', 'jade');
 app.use(cors())
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next) {

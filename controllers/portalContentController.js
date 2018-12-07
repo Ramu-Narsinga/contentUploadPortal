@@ -1,6 +1,6 @@
 var portalContentModel = require("../models/uploadContent")
-var formidable = require('formidable');
 var fs = require('fs');
+var path = require('path');
 
 //for saving form details into mongodb
 exports.save_portal_content = function(req, res) {
@@ -24,25 +24,11 @@ exports.save_portal_content = function(req, res) {
   });
 }
 
-//for file file upload
+//for file upload
 exports.upload_file = function(req, res) {
-  console.log("upload file in controller", req.body);
+  console.log("req.body", req.body, "req.file", req.file);
 
-  // Creates /tmp/a/apple, regardless of whether `/tmp` and /tmp/a exist.
-  fs.mkdir('/tmp/a/apple', {
-    recursive: true
-  }, (err) => {
-    if (err) throw err;
-  });
-
-  var form = new formidable.IncomingForm();
-
-  //form parse code
-  form.parse(req, function(err, fields, files) {
-    console.log("what's in files", files);
-    res.redirect('/');
-    res.end();
-  });
+  res.send("file uploaded");
 }
 
 //to get all content uploaded details from mongodb
