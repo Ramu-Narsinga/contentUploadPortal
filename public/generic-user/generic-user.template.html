@@ -21,7 +21,7 @@
           <div class="md-toolbar-tools">Please Upload A File</div>
 
           <md-content layout-padding>
-            <input type="file" ngf-select ng-model="picFile" name="file" accept="image/*" ngf-max-size="2MB" required ngf-model-invalid="errorFile">
+            <input type="file" ngf-select ng-model="picFile" name="file" required">
             <!-- <i ng-show="uploadForm.file.$error.required">*required</i><br>
             <i ng-show="uploadForm.file.$error.maxSize">File too large
               {{errorFile.size / 1000000|number:1}}MB: max 2M</i> -->
@@ -58,7 +58,7 @@
           <textarea ng-model="contentUploadedDetails.comment" max-rows="4"></textarea>
         </md-input-container>
         <br>
-        <md-button type="submit" class="md-accent md-raised" ng-disabled="!uploadForm.$valid" ng-click="submitContentDetails(picFile)">Submit</md-button>
+        <md-button type="submit" class="md-accent md-raised" ng-click="submitContentDetails(picFile)">Submit</md-button>
       </div>
     </div>
   </div>
@@ -66,15 +66,18 @@
 
 <div class="container-fluid" ng-hide="hideUploadedContentCards">
   <div class="row">
-    <div class="col-md-4 col-sm-12 col-xs-4" ng-repeat="content in contentUploaded">
-      <md-card>
-        <img src="card-image.png" class="md-card-image" alt="image caption">
+    <div class="col-md-4 col-sm-12 col-xs-4" ng-repeat="content in contentUploaded" ng-init="content.hideEditButton=true;content.hideDeleteButton=true">
+      <md-card ng-mouseenter="showEditDeleteButtons(content)" ng-mouseleave="hideEditDeleteButtons(content)">
+        <img src="/uploads/{{content.uploaded_file_name}}" class="md-card-image" alt="image N/A">
         <md-card-content>
-          <h2>{{content.comment}}</h2>
-          <p>{{content.district}}</p>
+          <p><b>District:</b> {{content.district}}</p>
+          <p><b>Constituency:</b> {{content.constituency}}</p>
+          <p><b>Tags:</b> {{content.tags}}</p>
+          <p><b>Comment:</b> {{content.comment}}</p>
         </md-card-content>
         <md-card-footer>
-          Card footer
+          <md-button ng-hide="content.hideEditButton" class="md-raised md-primary">Edit</md-button>
+          <md-button ng-hide="content.hideDeleteButton" class="md-raised md-warn" style="background-color:#FF0000">Delete</md-button>
         </md-card-footer>
       </md-card>
     </div>

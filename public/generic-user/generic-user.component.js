@@ -12,6 +12,21 @@ component('genericUser', {
     $scope.contentUploadedDetails = {};
     $scope.hideUploadContentForm = false;
     $scope.hideUploadedContentCards = true;
+
+    //this function gets called when mouseleave card of uploaded content to show edit delete buttons
+    $scope.hideEditDeleteButtons = function(content) {
+      // console.log("content", content, "mouse leave hide",$scope.content.hideEditButton, "show", $scope.content.hideEditButton);
+      content.hideEditButton = true;
+      content.hideDeleteButton = true;
+    }
+
+    //this function to hide edit/delete buttons
+    $scope.showEditDeleteButtons = function(content) {
+      // console.log("content", content, "mouseover hide",$scope.content.hideEditButton, "show", $scope.content.hideEditButton);
+      content.hideEditButton = false;
+      content.hideDeleteButton = false;
+    }
+
     //dropdown for districts
     $scope.states = ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
       'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' +
