@@ -1,6 +1,60 @@
 var portalContentModel = require("../models/uploadContent")
 var fs = require('fs');
 var path = require('path');
+var multer = require('multer');
+
+// *** upload related code
+var dir = path.win32.dirname(__dirname);
+var uploadsDir = dir + '/uploads';
+
+function makeDirectory() {
+  try {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir);
+    }
+
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir);
+    }
+
+  } catch (err) {
+    if (err.code !== 'EEXIST')
+      throw err;
+  } // try-catch
+}
+
+var storage = multer.diskStorage({
+
+  destination: function(req, file, callback) {
+    makeDirectory();
+    callback(null, uploadsDir)
+  },
+  filename: function(req, file, callback) {
+    callback(null, file.originalname);
+  }
+});
+
+var allowedFileFormats = [".png", ".jpg", ".gif", ".jpeg", ".webm", ".mkv", ".flv", ".avi", ".mp4", ".mp4p", ".m4v", ".mpg", ".mpeg", ".3gp", ".svi", ".flv"]
+
+// define nulter object one time
+var upload = multer({
+  storage: storage,
+  fileFilter: function(req, file, callback) {
+    console.log("multer upload file info: " + JSON.stringify(file));
+
+    var ext = path.extname(file.originalname);
+    if (ext != null)
+      ext = ext.toLowerCase();
+
+    console.log("extension is", ext);
+
+    if (allowedFileFormats.indexOf(ext) == -1) {
+      callback('File format/extension ' + ext + ' is not valid', false);
+    } else {
+      callback(null, true);
+    }
+  }
+}).single('file');
 
 //for saving form details into mongodb
 exports.save_portal_content = function(req, res) {
@@ -28,7 +82,19 @@ exports.save_portal_content = function(req, res) {
 exports.upload_file = function(req, res) {
   console.log("req.body", req.body, "req.file", req.file);
 
-  res.send("file uploaded");
+  upload(req, res, function(err) {
+    if (err) {
+      console.log("Error while uploading file: ", err);
+      res.send("Error while uploading file: " + err);
+    } else {
+      console.log("Done with uploading and updating student information");
+      setTimeout(myFunction, 3000);
+
+      function myFunction() {
+        res.redirect("/");
+      }
+    }
+  });
 }
 
 //to get all content uploaded details from mongodb

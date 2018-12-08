@@ -3,5 +3,6 @@ angular.module('genericUser', [
   'flow',
   'ngMaterial',
   'ngRoute',
-  'ngFileUpload'
+  'ngFileUpload',
+  'ngOnload',
 ]);

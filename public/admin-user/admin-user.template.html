@@ -1,10 +1,26 @@
-<md-card>
- <img src="card-image.png" class="md-card-image" alt="image caption">
- <md-card-content>
-   <h2>Card headline</h2>
-   <p>Card content</p>
- </md-card-content>
- <md-card-footer>
-   Card footer
- </md-card-footer>
-</md-card>
+<md-toolbar class="black" layout="row">
+  <h1 class="md-toolbar-tools thin">Admin Dashboard</h1>
+</md-toolbar>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4 col-sm-12 col-xs-4" style="background-color:#ecf2f9" ng-repeat="content in contentUploaded" ng-init="content.hideEditButton=true;content.hideDeleteButton=true">
+      <md-card style="background-color: #e6e6ff;" ng-mouseenter="showEditDeleteButtons(content)" ng-mouseleave="hideEditDeleteButtons(content)" ng-init="getFileExtension(content)">
+        <img src="/uploads/{{content.uploaded_file_name}}" class="md-card-image cardImage" alt="image/video N/A" ng-show="{{imageFileType}}">
+        <video width="100%" height="250" style="position:relative;bottom:8px" preload="auto" controls ng-show="{{videoFileType}}">
+          <source src="/uploads/{{content.uploaded_file_name}}" type="video/{{videoFileExtension}}">
+          Your browser does not support the video tag.
+        </video>
+        <md-card-content>
+          <p><b>District:</b> {{content.district}}</p>
+          <p><b>Constituency:</b> {{content.constituency}}</p>
+          <p><b>Tags:</b> {{content.tags}}</p>
+          <p><b>Comment:</b> {{content.comment}}</p>
+        </md-card-content>
+        <md-card-footer>
+          <md-button ng-hide="content.hideEditButton" class="md-raised md-primary">Edit</md-button>
+          <md-button ng-hide="content.hideDeleteButton" class="md-raised md-warn" style="background-color:#FF0000">Delete</md-button>
+        </md-card-footer>
+      </md-card>
+    </div>
+  </div>
+</div>

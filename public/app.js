@@ -6,6 +6,7 @@ angular.module('myApp', [
   'ngMaterial',
   'flow',
   'ngFileUpload',
+  'ngOnload',
   'genericUser',
   'adminUser'
 ]).
