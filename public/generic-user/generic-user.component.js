@@ -58,8 +58,8 @@ component('genericUser', {
     var last = {
       bottom: true,
       top: false,
-      left: true,
-      right: false
+      left: false,
+      right: true
     };
 
     $scope.toastPosition = angular.extend({}, last);
@@ -84,41 +84,41 @@ component('genericUser', {
 
       last = angular.extend({}, current);
     }
-    // toast related code extracted from codepen documentation
-    // to show toast alerts
-    var pinTo = $scope.getToastPosition();
-    var toast = $mdToast.simple()
-      .textContent("Please upload image with 'png/jpeg/jpg/gif' extension")
-      .action('UNDO')
-      .highlightAction(true)
-      .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.
-      .position(pinTo);
+    // // toast related code extracted from codepen documentation
+    // // to show toast alerts
+    // var pinTo = $scope.getToastPosition();
+    // var toast = $mdToast.simple()
+    //   .textContent("Please upload image with 'png/jpeg/jpg/gif' extension")
+    //   .action('UNDO')
+    //   .highlightAction(true)
+    //   .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.
+    //   .position(pinTo);
 
     //this function gets called when a file is succesfully uploaded
     // $scope.fileAddedFunction = function() {
-      // console.log("fileAddedFunction");
-      // console.log("file name", $files[0].file.name)
-      // if ($files.length > 0) {
-      //   $scope.contentUploadedDetails.UploadedfileName = $files[0].file.name;
-        //split to get the extension and show toaster alert and remove incompatible file Uploaded
-      //   var fileExtension = $files[0].file.type.split("/");
-      //   console.log("fileExtension[1]", fileExtension[1]);
-      // }
+    // console.log("fileAddedFunction");
+    // console.log("file name", $files[0].file.name)
+    // if ($files.length > 0) {
+    //   $scope.contentUploadedDetails.UploadedfileName = $files[0].file.name;
+    //split to get the extension and show toaster alert and remove incompatible file Uploaded
+    //   var fileExtension = $files[0].file.type.split("/");
+    //   console.log("fileExtension[1]", fileExtension[1]);
+    // }
 
-      // if (fileExtension[1] != 'png' && fileExtension[1] != 'jpg' && fileExtension[1] != 'jpeg' && fileExtension[1] != 'gif') {
-      //   console.log("fileExtension is incompatible, remove the uploaded file and send toast", fileExtension[1]);
-      //   $flow.cancel();
-      //   $mdToast.show(toast).then(function(response) {
-      //     if (response == 'ok') {
-      //       alert('You clicked the \'UNDO\' action.');
-      //     }
-      //   });
-      // }
+    // if (fileExtension[1] != 'png' && fileExtension[1] != 'jpg' && fileExtension[1] != 'jpeg' && fileExtension[1] != 'gif') {
+    //   console.log("fileExtension is incompatible, remove the uploaded file and send toast", fileExtension[1]);
+    //   $flow.cancel();
+    //   $mdToast.show(toast).then(function(response) {
+    //     if (response == 'ok') {
+    //       alert('You clicked the \'UNDO\' action.');
+    //     }
+    //   });
+    // }
     // }
 
     //this function gets called when submit is called to use a service and send a http request
     $scope.submitContentDetails = function(file) {
-      console.log("file",file, $scope.picFile);
+      console.log("file", file, $scope.picFile);
       $scope.contentUploadedDetails.UploadedfileName = $scope.picFile.name;
       console.log("contentUploadedDetails", $scope.contentUploadedDetails);
       //assign ng-bind data to the JSON sent in http request
@@ -126,8 +126,22 @@ component('genericUser', {
       genericUserService.genericUserContentPostRequest($scope.contentUploadedDetails).then(postRequestSuccess, postRequestError);
     }
 
-    function postRequestSuccess(respnonse) {
+    function postRequestSuccess(response) {
       console.log("response in component post success", response);
+      //toast alert related code
+      var pinTo = $scope.getToastPosition();
+      var toast = $mdToast.simple()
+        .textContent('Data uploaded successfully, you can upload more')
+        // .action('UNDO')
+        .highlightAction(true)
+        .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.
+        .position(pinTo);
+
+      $mdToast.show(toast).then(function(response) {
+        if (response == 'ok') {
+          alert('You clicked the \'UNDO\' action.');
+        }
+      });
     }
 
     function postRequestError(response) {

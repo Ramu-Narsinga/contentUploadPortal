@@ -68,7 +68,7 @@
   <div class="row">
     <div class="col-md-4 col-sm-12 col-xs-4" ng-repeat="content in contentUploaded" ng-init="content.hideEditButton=true;content.hideDeleteButton=true">
       <md-card ng-mouseenter="showEditDeleteButtons(content)" ng-mouseleave="hideEditDeleteButtons(content)">
-        <img src="/uploads/{{content.uploaded_file_name}}" class="md-card-image" alt="image N/A">
+        <img src="/uploads/{{content.uploaded_file_name}}" class="md-card-image cardImage" alt="image N/A">
         <md-card-content>
           <p><b>District:</b> {{content.district}}</p>
           <p><b>Constituency:</b> {{content.constituency}}</p>

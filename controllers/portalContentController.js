@@ -34,7 +34,7 @@ var storage = multer.diskStorage({
   }
 });
 
-var allowedFileFormats = [".png", ".jpg", ".gif", ".jpeg", ".webm", ".mkv", ".flv", ".avi", ".mp4", ".mp4p" , ".m4v", ".mpg", ".mpeg", ".3gp", ".svi", ".flv"]
+var allowedFileFormats = [".png", ".jpg", ".gif", ".jpeg", ".webm", ".mkv", ".flv", ".avi", ".mp4", ".mp4p", ".m4v", ".mpg", ".mpeg", ".3gp", ".svi", ".flv"]
 
 // define nulter object one time
 var upload = multer({
@@ -58,7 +58,7 @@ var upload = multer({
 
 //for saving form details into mongodb
 exports.save_portal_content = function(req, res) {
-  
+
   console.log("in save portal content stringify", req.body);
   // create the instance of the model and then save it
   var portal_content_instance = new portalContentModel({
@@ -88,7 +88,11 @@ exports.upload_file = function(req, res) {
       res.send("Error while uploading file: " + err);
     } else {
       console.log("Done with uploading and updating student information");
-      res.redirect("/");
+      setTimeout(myFunction, 3000);
+
+      function myFunction() {
+        res.redirect("/");
+      }
     }
   });
 }
