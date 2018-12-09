@@ -1,0 +1,18 @@
+var assemblyConstituenciesExported = [{
+  "Srikakulam": ["Ichchapuram", "Palasa", "Tekkali", "Pathapatnam", "Srikakulam", "Amadalavalasa", "Etcherla", "	Narasannapeta", "Rajam", "Palakonda"],
+  "Vizianagaram": ["Kurupam", "Parvathipuram", "Salur", "Bobbili", "Cheepurupalli", "Gajapathinagaram", "Nellimarla", "Vizianagaram", "Srungavarapukota"],
+  "Vishakhapatnam": ["Bhimili", "Visakhapatnam East", "Visakhapatnam South", "Visakhapatnam North", "Visakhapatnam West", "Gajuwaka", "Chodavaram", "Madugula", "Araku Valley", "Paderu", "Anakapalle", "Pendurthi", "Yelamanchili", "Payakaraopet", "Narsipatnam"],
+  "East Godavari": ["Tuni", "Prathipadu", "Pithapuram", "Kakinada Rural", "Peddapuram", "Anaparthy", "Kakinada City", "	Ramachandrapuram", "Mummidivaram", "Amalapuram", "Razole", "Gannavaram", "Kothapeta", "Mandapeta", "Rajanagaram", "Rajahmundry City", "Rajahmundry Rural", "Jaggampeta", "Rampachodavaram"],
+  "West Godavari": ["Kovvur", "Nidadavole", "Achanta", "Palakollu", "Narasapuram", "	Bhimavaram", "Undi", "Tanuku", "Tadepalligudem", "Unguturu", "Denduluru", "Eluru", "Gopalapuram", "Polavaram", "Chintalapudi"],
+  "Krishna": ["Tiruvuru", "Nuzvid", "Gannavaram", "Gudivada", "Kaikalur", "Pedana", "Machilipatnam", "Avanigadda", "Pamarru", "Penamaluru", "Vijayawada West", "Vijayawada Central", "Vijayawada East", "Mylavaram", "Nandigama", "Jaggayyapeta"],
+  "Guntur": ["Pedakurapadu", "Tadikonda", "Mangalagiri", "Ponnuru", "Vemuru", "Repalle", "Tenali", "Bapatla", "Prathipadu", "Guntur West", "Guntur East", "Chilakaluripet", "Narasaraopet", "Sattenapalle", "Vinukonda", "Gurajala", "Macherla"],
+  "Prakasam": ["Yerragondapalem", "Darsi", "Parchur", "Addanki", "Chirala", "Santhanuthalapadu", "Ongole", "Kandukur", "Kondapi", "Markapuram", "Giddalur", "Kanigiri"],
+  "Nellore": ["Kavali", "Atmakur", "Kovur", "Nellore City", "Nellore Rural", "Sarvepalli", "Gudur", "Sullurpeta", "Venkatagiri", "Udayagiri"],
+  "Kadapa": ["Badvel", "Rajampet", "Kadapa", "Kodur", "Rayachoti", "Pulivendla", "Kamalapuram", "Jammalamadugu", "Proddatur", "Mydukur"],
+  "Kurnool": ["Allagadda", "Srisailam", "Nandikotkur", "Kurnool", "Panyam", "Nandyal", "Banaganapalle", "Dhone", "Pattikonda", "Kodumur", "Yemmiganur", "Mantralayam", "Adoni", "Alur"],
+  "Anantapur": ["Rayadurg", "Uravakonda", "Guntakal", "Tadpatri", "Singanamala", "Anantapur Urban", "Kalyandurg", "	Raptadu", "Madakasira", "Hindupur", "Penukonda", "Puttaparthi", "Dharmavaram", "Kadiri"],
+  "Chittoor": ["Thamballapalle", "Pileru", "Madanapalle", "Punganur", "Chandragiri", "Tirupati", "Srikalahasti", "Satyavedu", "Nagari", "Gangadhara Nellore", "Chittoor", "Puthalapattu", "Palamaner", "Kuppam"]
+}];
+
+//parliamentary constituencies
+var parliamentConstituenciesExported = ["Amalapuram", "Anakapalli", "Anantapur", "Araku", "Bapatla", "Bhadrachalam", "Bobbili", "Chittoor", "Kadapa", "Eluru", "Guntur", "Hanamkonda", "Hindupur", "Kakinada", "Kurnool", "Machilipatnam", "Miryalaguda", "Nandyal", "Narasapuram", "Narasaraopet", "Nellore", "Ongole", "Parvathipuram", "Rajahmundry", "Rajampet", "Siddipet", "Srikakulam", "Tenali", "Tirupati", "Vijayawada", "Vishakhapatnam", "Vizianagaram"];
