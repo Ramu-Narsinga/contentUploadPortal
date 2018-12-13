@@ -34,6 +34,16 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use(require('express-session')({
+  secret: 'asuydgabsydgtbhasu',
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 3 // 3 hour
+  },
+  store: store,
+  resave: false, //don't save session if unmodified
+  saveUninitialized: true
+}));
+
 app.use('/', loginRouter);
 app.use('/user', usersRouter);
 
@@ -60,22 +70,10 @@ store.on('error', function(error) {
   // assert.ok(false);
 });
 
-app.use(require('express-session')({
-  secret: 'asuydgabsydgtbhasu',
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 3 // 3 hour
-  },
-  store: store,
-  // Boilerplate options, see:
-  // * https://www.npmjs.com/package/express-session#resave
-  // * https://www.npmjs.com/package/express-session#saveuninitialized
-  resave: false, //don't save session if unmodified
-  saveUninitialized: true
-}));
-
-// app.get('/session', function(req, res) {
-//   res.send('Hello ' + JSON.stringify(req.session));
-// });
+app.get('/session', function(req, res) {
+  console.log("what's in session", req.session);
+  res.send('Hello ' + JSON.stringify(req.session));
+});
 
 app.get('/isAuthenticated', function(req, res) {
     if (req.session.user) {

@@ -50,8 +50,8 @@ exports.user_login = function(req, res) {
       //res.redirect("/memorabilia");
       var loggedInState = false;
       if (req.body.email == adminMail && req.body.password == adminPwd) {
-        // req.session.user.id = req.body.email;
-        // req.session.role = 'admin';
+        req.session.user = req.body.email;
+        req.session.role = 'admin';
         res.json({
           result: 'success',
           role: 'admin',
@@ -64,8 +64,8 @@ exports.user_login = function(req, res) {
             Msg: "Please provide valid login details"
           })
         } else {
-          // req.session.user.id = req.body.email;
-          // req.session.role = 'generic'
+          req.session.user = req.body.email;
+          req.session.role = 'generic'
           res.json({
             loginres,
             result: 'success',
