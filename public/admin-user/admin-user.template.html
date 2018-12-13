@@ -1,5 +1,6 @@
 <md-toolbar class="black" layout="row">
   <h1 class="md-toolbar-tools thin">Admin Dashboard</h1>
+  <a href="/logout"><md-button class="md-accent md-raised" style="height:5px;width:5px">Log Out</md-button></a>
 </md-toolbar>
 <div class="container-fluid" style="background-color:#ecf2f9;">
   <div class="row" style="background-color:#d9f2d9; padding:2%">
@@ -64,7 +65,7 @@
           <p><b>Comment:</b> {{content.comment}}</p>
         </md-card-content>
         <md-card-footer>
-          <md-button ng-hide="content.hideEditButton" class="md-raised md-primary">Edit</md-button>
+          <a href="#!/portal/admin/{{content._id}}/edit/"><md-button ng-hide="content.hideEditButton" class="md-raised md-primary">Edit</md-button></a>
           <md-button ng-hide="content.hideDeleteButton" class="md-raised md-warn" style="background-color:#FF0000">Delete</md-button>
         </md-card-footer>
       </md-card>

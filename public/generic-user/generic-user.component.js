@@ -7,14 +7,16 @@ module('genericUser').
 component('genericUser', {
   // Note: The URL is relative to our `index.html` file
   templateUrl: 'generic-user/generic-user.template.html',
-  controller: ['$scope', '$mdToast', 'Upload', 'genericUserService', function GenericUserController($scope, $mdToast, Upload, genericUserService) {
+  controller: ['$scope', '$mdToast', 'Upload', 'genericUserService', 'adminUserService', '$routeParams', function GenericUserController($scope, $mdToast, Upload, genericUserService, adminUserService, $routeParams) {
+
+    $scope.idForUpdate = $routeParams.id;
+
     //JSON that contains all details
     $scope.contentUploadedDetails = {};
     $scope.hideUploadContentForm = false;
     $scope.assemblyConstituenciesForDropdown = [];
     $scope.parliamentConstituenciesForDropdown = [];
 
-    //dropdown for districts
     //dropdown for districts
     $scope.Districts = [
       "Anantapur",
@@ -122,5 +124,23 @@ component('genericUser', {
       console.log("error in component post request", response);
     }
 
+    console.log("$scope.idForUpdate", $scope.idForUpdate);
+    if($scope.idForUpdate) {
+      //call a service to find by id and populating data
+      adminUserService.adminUserPutRequestForEdit($scope.idForUpdate).then(getEditableRequestSuccess, getEditableRequestError);;
+    }
+
+    function getEditableRequestSuccess(response) {
+     console.log("getEditableRequestSuccess response", response);
+     $scope.contentUploadedDetails = response.data;
+     console.log("$scope.contentUploadedDetails", $scope.contentUploadedDetails);
+     $scope.setParliamentAndAssemblyDropDownValues(response.data.district);
+     $scope.contentUploadedDetails.assemblyConstituency = response.data.assembly_constituency;
+     $scope.contentUploadedDetails.parliamentConstituency = response.data.parliament_constituency;
+    }
+
+    function getEditableRequestError(response) {
+      console.log("response of error", response);
+    }
   }]
 });

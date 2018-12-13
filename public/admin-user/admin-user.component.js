@@ -121,5 +121,6 @@ component('adminUser', {
     }
 
     $scope.loadUploadedContent();
+
   }]
 });

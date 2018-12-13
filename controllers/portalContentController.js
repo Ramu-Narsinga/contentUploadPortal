@@ -113,3 +113,20 @@ exports.get_content_uploaded = function(req, res) {
       res.json(list);
     });
 }
+
+//get selected/editable content
+exports.get_one_content = function(req, res) {
+  console.log("req.params", req.params);
+  portalContentModel.findOne({ _id: req.params.id })
+      .sort([
+          ['name', 'ascending']
+      ])
+      .exec(function(err, list) {
+          if (err) { return next(err); }
+          //Successful, so render
+          //res.render('genre_list', { title: 'Genre List', genre_list: list_genres });
+          //res.json(list)
+          //console.log("this is list from getOne" + list);
+          res.json(list);
+      });
+}

@@ -44,8 +44,26 @@ app.use(require('express-session')({
   saveUninitialized: true
 }));
 
+
+function checkLogin(req, res, next) {
+    if (req.session.user) {
+        next(); //If session exists, proceed to page
+    } else {
+        res.redirect('/');
+    }
+}
+
+function checkLoginForApis(req, res, next) {
+    if (req.session.user) {
+        next(); //If session exists, proceed to page
+    } else {
+        res.json({ result: "Error", message: "Session is not valid. Please login first" });
+    }
+}
+
+
 app.use('/', loginRouter);
-app.use('/user', usersRouter);
+app.use('/user', checkLoginForApis, usersRouter);
 
 //Set up default mongoose connection
 var mongoDB = 'mongodb://127.0.0.1/portal_content';
@@ -70,14 +88,15 @@ store.on('error', function(error) {
   // assert.ok(false);
 });
 
-app.get('/session', function(req, res) {
-  console.log("what's in session", req.session);
-  res.send('Hello ' + JSON.stringify(req.session));
-});
+// app.get('/session', function(req, res) {
+//   console.log("what's in session", req.session);
+//   res.send('Hello ' + JSON.stringify(req.session));
+// });
 
 app.get('/isAuthenticated', function(req, res) {
+  console.log("in get req of /isAuthenticated", req.session);
     if (req.session.user) {
-        res.json({ result: "Success", message: "Session valid", userId: req.session.user.id, role: req.session.user.role });
+        res.json({ result: "Success", message: "Session valid", userId: req.session.user, role: req.session.role });
     } else {
         res.json({ result: "Error", message: "Session not valid" });
     }
@@ -89,22 +108,6 @@ app.get('/logout', function(req, res) {
     });
     res.redirect('/');
 });
-
-function checkLogin(req, res, next) {
-    if (req.session.user) {
-        next(); //If session exists, proceed to page
-    } else {
-        res.redirect('/');
-    }
-}
-
-function checkLoginForApis(req, res, next) {
-    if (req.session.user) {
-        next(); //If session exists, proceed to page
-    } else {
-        res.json({ result: "Error", message: "Session is not valid. Please login first" });
-    }
-}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
