@@ -7,8 +7,9 @@ var Schema = mongoose.Schema;
 var PortalContentSchema = new Schema({
     uploaded_file_name: {type: String, required: true, max: 100},
     district: {type: String, required: true, max: 100},
-    constituency: {type: String, required: true, max: 100},
-    tags: [{ type: String }],
+    assembly_constituency: {type: String, required: true, max: 100},
+    parliament_constituency: {type: String, required:true,max: 100},
+    tags: [String],
     comment: {type: String}
 });
 

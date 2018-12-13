@@ -28,7 +28,7 @@
   <script src="lib/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
 
-<body>
+<body  style="background-color: #f0f5f5;">
 
   <div ng-view></div>
 
@@ -52,13 +52,18 @@
   <script src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script> <!-- for no html5 browsers support -->
   <script src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
   <script src="bower_components/ng-onload/release/ng-onload.min.js"></script>
+  <script src="/bower_components/angular-cookies/angular-cookies.js"></script>
   <script src="app.js"></script>
   <script src="generic-user/generic-user.module.js"></script>
   <script src="generic-user/generic-user.component.js"></script>
   <script src="admin-user/admin-user.module.js"></script>
   <script src="admin-user/admin-user.component.js"></script>
+  <script src="log-in/log-in.module.js"></script>
+  <script src="log-in/log-in.component.js"></script>
   <script src="common/genericUserService.js"></script>
   <script src="common/adminUserService.js"></script>
+  <script src="common/userCredentialsService.js"></script>
+  <script src="common/necessaryJSONdata.json"></script>
   <script src="core/version/version.js"></script>
   <script src="core/version/version-directive.js"></script>
   <script src="core/version/interpolate-filter.js"></script>

@@ -64,8 +64,9 @@ exports.save_portal_content = function(req, res) {
   var portal_content_instance = new portalContentModel({
     uploaded_file_name: req.body.UploadedfileName,
     district: req.body.district,
-    constituency: req.body.constituency,
-    tags: [req.body.constituency],
+    assembly_constituency: req.body.assemblyConstituency,
+    parliament_constituency: req.body.parliamentConstituency,
+    tags: req.body.tags,
     comment: req.body.comment
   });
 

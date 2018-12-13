@@ -7,8 +7,10 @@ angular.module('myApp', [
   'flow',
   'ngFileUpload',
   'ngOnload',
+  'ngCookies',
   'genericUser',
-  'adminUser'
+  'adminUser',
+  'logIn'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   // $locationProvider.hashPrefix('!');
@@ -20,52 +22,40 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
   when('/portal/admin/', {
     template: '<admin-user></admin-user>'
   }).
+  when('/login', {
+    template: '<log-in></log-in>'
+  }
+  ).
   otherwise({
-    redirectTo: '/portal/generic/'
+    redirectTo: '/login'
   });
-}]);
-// .
-// //generic-user-service is application wide injectable
-// factory('genericUserService', ["$http", function($http) {
-//   // function genericUseContentrPostRequest($http) {
-//   //   console.log("genericUseContentrPostRequest");
-//   // }
-//   var factory = {};
+}])
+// .run(['$rootScope', '$location', function($rootScope, $location) {
 //
-//   factory.genericUserContentPostRequest = function(contentUploadedDetails) {
-//     console.log("genericUseContentrPostRequest", contentUploadedDetails);
-//     var req = {
-//       method: 'POST',
-//       url: '/user/uploadUserContent',
-//       data: contentUploadedDetails
-//     }
+//     $rootScope.$on('$routeChangeStart', function(event) {
 //
-//     $http(req).then(factory.successCallback, factory.errorCallback);
-//   }
+//         $.get("/isAuthenticated", function(resp) {
+//             //console.log("response about userId from server in routing and authenticating:" + JSON.stringify(resp));
+//             if (resp != null && resp.result != "Success") {
+//                 $location.path("/login");
+//             } else if (resp == null) {
+//                 $location.path("/login");
+//             } else if (resp.role == "alumni") { // to prevent general user from accessing dashboard
+//                 $rootScope.userRole = resp.role;
 //
-//   factory.genericUserGetContentUploaded = function() {
-//     var req = {
-//       method: 'GET',
-//       url: '/user/generic/getContentUploaded'
-//     }
+//                 if ($location.path() == "/memdetails") {
+//                     // $location.path("/memorabilia");
+//                 }
+//             } else {
+//                 $rootScope.userRole = resp.role;
+//                 if (resp.role == "organizer") {
+//                     if ($location.path() == "/login") {
+//                         $location.path("/memdetails");
+//                     }
+//                 }
+//             }
+//         });
 //
-//     // $http(req).then(factory.successCallback, factory.errorCallback);
-//     return $http(req).then(factory.successCallback, factory.errorCallback);
-//   }
+//     });
 //
-//   factory.successCallback = function(response) {
-//     // $scope.status = response.status;
-//     // $scope.data = response.data;
-//     console.log("success", response);
-//     return response;
-//   }
-//
-//   factory.errorCallback = function(response) {
-//     // $scope.data = response.data || 'Request failed';
-//     // $scope.status = response.status;
-//     console.log("error", response);
-//     return ($q.reject(response));
-//   }
-//
-//   return factory;
 // }]);

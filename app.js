@@ -5,11 +5,13 @@ var cors = require('cors');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-//Import the mongoose module
 var mongoose = require('mongoose');
+var session = require('express-session');
+var MongoDBStore = require('connect-mongodb-session')(session);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var loginRouter = require('./routes/login');
 
 var app = express();
 
@@ -32,7 +34,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use('/', indexRouter);
+app.use('/', loginRouter);
 app.use('/user', usersRouter);
 
 //Set up default mongoose connection
@@ -45,6 +47,66 @@ var db = mongoose.connection;
 
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+var store = new MongoDBStore({
+  uri: mongoDB,
+  collection: 'portalSessions'
+});
+
+// Catch errors
+store.on('error', function(error) {
+  console.log("error", error);
+  // assert.ifError(error);
+  // assert.ok(false);
+});
+
+app.use(require('express-session')({
+  secret: 'asuydgabsydgtbhasu',
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 3 // 3 hour
+  },
+  store: store,
+  // Boilerplate options, see:
+  // * https://www.npmjs.com/package/express-session#resave
+  // * https://www.npmjs.com/package/express-session#saveuninitialized
+  resave: false, //don't save session if unmodified
+  saveUninitialized: true
+}));
+
+// app.get('/session', function(req, res) {
+//   res.send('Hello ' + JSON.stringify(req.session));
+// });
+
+app.get('/isAuthenticated', function(req, res) {
+    if (req.session.user) {
+        res.json({ result: "Success", message: "Session valid", userId: req.session.user.id, role: req.session.user.role });
+    } else {
+        res.json({ result: "Error", message: "Session not valid" });
+    }
+});
+
+app.get('/logout', function(req, res) {
+    req.session.destroy(function() {
+        console.log("user logged out.")
+    });
+    res.redirect('/');
+});
+
+function checkLogin(req, res, next) {
+    if (req.session.user) {
+        next(); //If session exists, proceed to page
+    } else {
+        res.redirect('/');
+    }
+}
+
+function checkLoginForApis(req, res, next) {
+    if (req.session.user) {
+        next(); //If session exists, proceed to page
+    } else {
+        res.json({ result: "Error", message: "Session is not valid. Please login first" });
+    }
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
