@@ -18,9 +18,18 @@ component('adminUser', {
     $scope.videoFileType = false;
     $scope.imageFileType = true; //show img tag by default
     $scope.hideFilterDiv = true;
+    $scope.toggle={"class":"rotatedCSS"};
+    $scope.rotated = true;
     //show search filters
-    $scope.showDropDown = function() {
-     $scope.hideFilterDiv = false;
+    $scope.showDropDown = function(toggle) {
+     $scope.hideFilterDiv = !$scope.hideFilterDiv;
+     //toggle icon logic
+     if(!toggle.class){
+            toggle.class = ''; //Assume it's not clicked if there's no existing value
+     }
+     
+     toggle.class = !toggle.class;
+     $scope.rotated = toggle.class;
     }
 
     //dropdown for districts
