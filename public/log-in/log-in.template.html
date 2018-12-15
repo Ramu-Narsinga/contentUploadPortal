@@ -1,41 +1,55 @@
-<br>
-<br>
-<div ng-if=signupPage>
-<md-input-container>
-  <label>Email</label>
-  <input type="text" ng-model="user.email">
-</md-input-container>
+<div class="container">
+  <div class="row">
+    <md-card id="loginCardCss" md-theme="{{ showDarkTheme ? 'dark-orange' : 'default' }}" md-theme-watch="">
+      <md-card-title>
+        <md-card-title-text style="text-align: center">
+          <span class="md-headline">{{cardTitle}}</span>
+          <!-- <span class="md-subhead">Extra Large</span> -->
+        </md-card-title-text>
+      </md-card-title>
+      <md-card-content layout="row" layout-align="space-between">
+        <div ng-if=signupPage>
+          <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
+            <label style='left:2%'>Email</label>
+            <input type="text" ng-model="user.email">
+          </md-input-container>
 
-<md-input-container>
-  <label>Username</label>
-  <input type="text" ng-model="user.name">
-</md-input-container>
+          <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
+            <label style='left:2%'>Username</label>
+            <input type="text" ng-model="user.name">
+          </md-input-container>
 
-<md-input-container>
-  <label>Password</label>
-  <input type="text" ng-model="user.password">
-</md-input-container>
+          <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
+            <label style='left:2%'>Password</label>
+            <input type="text" ng-model="user.password">
+          </md-input-container>
 
-<md-input-container>
-  <label>Re-enter Password</label>
-  <input type="text" ng-model="user.passwordConf">
-</md-input-container>
+          <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
+            <label style='left:2%'>Re-enter Password</label>
+            <input type="text" ng-model="user.passwordConf">
+          </md-input-container>
 
-<md-button class="md-primary" ng-click="userDetailsSubmitted()">Submit</md-button><a href ng-click="loginPageLinkClicked()">Already have an account?. Sign In.</a>
-</div>
+          <md-button class="md-primary" ng-click="userDetailsSubmitted()">Submit</md-button><a href ng-click="loginPageLinkClicked()">Already have an account? Sign In.</a>
+        </div>
 
-<div ng-if=loginPage>
-  <br><br>
-  <md-input-container>
-    <label>Email</label>
-    <input type="text" ng-model="userlogin.email">
-  </md-input-container>
+        <div ng-if=loginPage>
+          <br><br>
+          <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
+            <label style='left:2%'>Email</label>
+            <input type="text" ng-model="userlogin.email">
+          </md-input-container>
 
-  <md-input-container>
-    <label>Password</label>
-    <input type="text" ng-model="userlogin.password">
-  </md-input-container>
+          <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
+            <label style='left:2%'>Password</label>
+            <input type="text" ng-model="userlogin.password">
+          </md-input-container>
 
-  <md-button class="md-primary" ng-click="loginButtonSubmitted(userlogin.email, userlogin.password)">Submit</md-button>
+          <md-button class="md-primary" ng-click="loginButtonSubmitted(userlogin.email, userlogin.password)">Submit</md-button><a href ng-click="signUpPageLinkClicked()">Sign up?</a>
 
+        </div>
+      </md-card-content>
+    </md-card>
+    <br>
+    <br>
+  </div>
 </div>

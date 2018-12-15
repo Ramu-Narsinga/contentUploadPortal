@@ -12,15 +12,24 @@ component('logIn', {
     //by default show sign up page
     $scope.signupPage = true;
     $scope.loginPage = false;
+    $scope.cardTitle = "Sign up"
 
     //to show login page when link for sign in is clicked
     $scope.loginPageLinkClicked = function() {
       //show login apage and hide signup page
-      console.log("loginPageLinkClicked")
+      // console.log("loginPageLinkClicked")
       $scope.signupPage = false;
+      $scope.cardTitle = "Log in";
       $scope.loginPage = true;
     }
 
+    $scope.signUpPageLinkClicked = function() {
+      //show signup apage and hide login page
+      // console.log("loginPageLinkClicked")
+      $scope.signupPage = true;
+      $scope.cardTitle = "Sign up";
+      $scope.loginPage = false;
+    }
     //for letting the user log in after checking api response and redirecting to the respective allowed page
 
 
