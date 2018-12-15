@@ -117,16 +117,44 @@ exports.get_content_uploaded = function(req, res) {
 //get selected/editable content
 exports.get_one_content = function(req, res) {
   console.log("req.params", req.params);
-  portalContentModel.findOne({ _id: req.params.id })
-      .sort([
-          ['name', 'ascending']
-      ])
-      .exec(function(err, list) {
-          if (err) { return next(err); }
-          //Successful, so render
-          //res.render('genre_list', { title: 'Genre List', genre_list: list_genres });
-          //res.json(list)
-          //console.log("this is list from getOne" + list);
-          res.json(list);
-      });
+  portalContentModel.findOne({
+      _id: req.params.id
+    })
+    .sort([
+      ['name', 'ascending']
+    ])
+    .exec(function(err, list) {
+      if (err) {
+        return next(err);
+      }
+      //Successful, so render
+      //res.render('genre_list', { title: 'Genre List', genre_list: list_genres });
+      //res.json(list)
+      //console.log("this is list from getOne" + list);
+      res.json(list);
+    });
+}
+
+//update selected/edited content
+exports.update_one_content = function(req, res) {
+  console.log("what's in req.params, req.body really", req.params, req.body);
+  portalContentModel.findOneAndUpdate({
+      _id: req.params.id
+    }, {
+      $set: {
+        "uploaded_file_name": req.body.uploaded_file_name,
+        "district": req.body.district,
+        "assembly_constituency": req.body.assembly_constituency,
+        "parliament_constituency": req.body.parliament_constituency,
+        "tags": req.body.tags,
+        "comment": req.body.comment
+      }
+    })
+    .exec(function(err, list) {
+      if (err) {
+        return next(err);
+      }
+      console.log("successfully updated");
+      res.json(list);
+    });
 }

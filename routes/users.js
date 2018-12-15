@@ -71,4 +71,7 @@ router.get('/admin/getContentUploaded', portal_content.get_content_uploaded);
 //get one by id for populating generic template
 router.get('/admin/:id/edit', portal_content.get_one_content);
 
+//get one by id for populating generic template
+router.put('/admin/:id/edit', portal_content.update_one_content);
+
 module.exports = router;

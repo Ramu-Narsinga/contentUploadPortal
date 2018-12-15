@@ -3,13 +3,13 @@
   <a href="/logout"><md-button class="md-accent md-raised" style="height:5px;width:5px">Log Out</md-button></a>
 </md-toolbar>
 <div class="container-fluid" style="background-color:#ecf2f9;">
-  <div class="row" style="background-color:#d9f2d9; padding:2%">
+  <div class="row" style="background-color:#d9f2d9; padding:1%">
     <div class="col-xs-12 col-md-12 col-sm-12">
       <p>Search By:</p><span><i class="fa fa-chevron-circle-down" style="font-size: 24px;position: absolute;right: 0px;top: 0px;" ng-click="showDropDown(toggle)" ng-class="{'rotatedCSS' : !rotated}"></i></span>
     </div>
     <div class="col-xs-3 col-md-6 col-sm-12" ng-hide="hideFilterDiv">
       <md-input-container class="md-block" flex-gt-sm="" required>
-        <label>District</label
+        <label>District</label>
         <md-select ng-model="search.selectedDistrict" ng-change="setParliamentAndAssemblyDropDownValues(search.selectedDistrict)">
           <md-option ng-repeat="district in Districts" value="{{district}}">
             {{district}}
@@ -48,7 +48,6 @@
       </md-input-container>
     </div>
   </div>
-  <br>
   <div class="row">
     <div class="col-md-4 col-sm-12 col-xs-4" ng-repeat="content in contentUploaded | filter:{tags:search.Tag} | filter:{parliament_constituency:search.ParliamentConstituency} | filter:{assembly_constituency:search.AssemblyConstituency}" ng-init="content.hideEditButton=true;content.hideDeleteButton=true">
       <md-card style="background-color: #e6e6ff;" ng-mouseenter="showEditDeleteButtons(content)" ng-mouseleave="hideEditDeleteButtons(content)">
