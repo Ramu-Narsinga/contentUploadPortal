@@ -12,6 +12,7 @@ component('logIn', {
     //by default show sign up page
     $scope.signupPage = true;
     $scope.loginPage = false;
+    $scope.user = {};
 
     //to show login page when link for sign in is clicked
     $scope.loginPageLinkClicked = function() {
@@ -104,7 +105,7 @@ component('logIn', {
         //toast alert related code
         var pinTo = $scope.getToastPosition();
         var toast = $mdToast.simple()
-          .textContent(response.data.successMessage)
+          .textContent(response.data.message)
           // .action('UNDO')
           .highlightAction(true)
           .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.

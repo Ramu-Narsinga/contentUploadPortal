@@ -49,6 +49,9 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
                 if ($location.path() == "/portal/admin/") {
                     $location.path("/portal/generic/");
                 }
+                if ($location.path() == "/login") {
+                    $location.path("/portal/generic/");
+                }
             } else {
                 $rootScope.userRole = resp.role;
                 if (resp.role == "admin") {

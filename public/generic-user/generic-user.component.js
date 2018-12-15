@@ -87,7 +87,9 @@ component('genericUser', {
     //this function gets called when submit is called to use a service and send a http request
     $scope.submitContentDetails = function(file) {
       console.log("file", file, $scope.picFile);
-      $scope.contentUploadedDetails.uploaded_file_name = $scope.picFile.name;
+      if ($scope.picFile) {
+       $scope.contentUploadedDetails.uploaded_file_name = $scope.picFile.name;
+      }
       $scope.contentUploadedDetails = $scope.contentUploadedDetails;
       console.log("contentUploadedDetails", $scope.contentUploadedDetails);
       //assign ng-bind data to the JSON sent in http request

@@ -62,10 +62,10 @@ exports.save_portal_content = function(req, res) {
   console.log("in save portal content stringify", req.body);
   // create the instance of the model and then save it
   var portal_content_instance = new portalContentModel({
-    uploaded_file_name: req.body.UploadedfileName,
+    uploaded_file_name: req.body.uploaded_file_name,
     district: req.body.district,
-    assembly_constituency: req.body.assemblyConstituency,
-    parliament_constituency: req.body.parliamentConstituency,
+    assembly_constituency: req.body.assembly_constituency,
+    parliament_constituency: req.body.parliament_constituency,
     tags: req.body.tags,
     comment: req.body.comment
   });
@@ -157,4 +157,17 @@ exports.update_one_content = function(req, res) {
       console.log("successfully updated");
       res.json(list);
     });
+}
+
+//delete selected content
+exports.delete_one_content = function(req, res) {
+  console.log("what's in req.params for delete", req.params);
+  portalContentModel.remove({_id:req.params.id})
+  .exec(function(err, result) {
+    if (err) {
+      return next(err);
+    }
+    console.log("successfully deleted one card content", result);
+    res.json(result);
+  })
 }
