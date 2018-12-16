@@ -66,7 +66,7 @@ app.use('/', loginRouter);
 app.use('/user', checkLoginForApis, usersRouter);
 
 //Set up default mongoose connection
-var mongoDB = 'mongodb://127.0.0.1/portal_content';
+var mongoDB = 'mongodb://portal_content_db_user:portal_content_db_user0@ds135844.mlab.com:35844/portal_content';
 mongoose.connect(mongoDB);
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
