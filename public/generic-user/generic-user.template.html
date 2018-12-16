@@ -1,4 +1,4 @@
-<form name="uploadForm" action="/user/formupload" method="post" enctype="multipart/form-data" ng-hide="hideUploadContentForm">
+<form name="uploadForm" style="background-color: #ecf2f9;height: 100%;" action="/user/formupload" method="post" enctype="multipart/form-data" ng-hide="hideUploadContentForm">
   <md-toolbar class="black" layout="row">
     <h1 class="md-toolbar-tools thin">Upload Content</h1>
     <a href="/logout"><md-button class="md-accent md-raised" style="height:5px;width:5px">Log Out</md-button></a>
@@ -12,7 +12,12 @@
           <div class="md-toolbar-tools" style="background-color: darkcyan;color: white;">Please Upload A File</div>
           <md-content layout-padding style="background-color: #e6f3ff;">
             <div class="input-group">
-              <input type="file" style="width:100%;background-color: aliceblue;" ngf-select ng-model="picFile" name="file" required">
+              <input type="file" style="width:100%;background-color: aliceblue;" ngf-select ng-model="picFile" name="file" requir="">
+              <div ng-messages="uploadForm.file.$error">
+                <div ng-message="required">This is required!</div>
+                <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+                <!-- <div ng-message="minlength">That's too short! minimum length is 4</div> -->
+              </div>
             </div>
             <img ng-show="uploadForm.file.$valid" ngf-thumbnail="picFile" class="thumb">
             <br>
@@ -23,43 +28,68 @@
       </div>
 
       <div class="col-xs-6 col-md-6 col-sm-12">
-        <md-input-container class="md-block" flex-gt-sm="" required>
+        <md-input-container class="md-block" flex-gt-sm="">
           <label>District</label>
-          <md-select ng-model="contentUploadedDetails.district" ng-change="setParliamentAndAssemblyDropDownValues(contentUploadedDetails.district)">
+          <md-select ng-model="contentUploadedDetails.district" ng-change="setParliamentAndAssemblyDropDownValues(contentUploadedDetails.district)" name="district" required="">
             <md-option ng-repeat="district in Districts" value="{{district}}">
               {{district}}
             </md-option>
           </md-select>
+          <div ng-messages="uploadForm.district.$error">
+            <div ng-message="required">This is required!</div>
+            <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+            <!-- <div ng-message="minlength">That's too short! minimum length is 4</div> -->
+          </div>
         </md-input-container>
         <br>
         <md-input-container class="md-block" flex-gt-sm="" required>
           <label>Assembly Constituency</label>
-          <md-select ng-model="contentUploadedDetails.assembly_constituency">
+          <md-select ng-model="contentUploadedDetails.assembly_constituency" name="ac" required="">
             <md-option ng-repeat="assembly_constituency in assemblyConstituenciesForDropdown" value="{{assembly_constituency}}">
               {{assembly_constituency}}
             </md-option>
           </md-select>
+          <div ng-messages="uploadForm.ac.$error">
+            <div ng-message="required">This is required!</div>
+            <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+            <!-- <div ng-message="minlength">That's too short! minimum length is 4</div> -->
+          </div>
         </md-input-container>
         <br>
-        <md-input-container class="md-block" flex-gt-sm="" required>
+        <md-input-container class="md-block" flex-gt-sm="">
           <label>Parliament Constituency</label>
-          <md-select ng-model="contentUploadedDetails.parliament_constituency">
+          <md-select ng-model="contentUploadedDetails.parliament_constituency"  name="pc" required="">
             <md-option ng-repeat="parliament_constituency in parliamentConstituencies" value="{{parliament_constituency}}">
               {{parliament_constituency}}
             </md-option>
           </md-select>
+          <div ng-messages="uploadForm.pc.$error">
+            <div ng-message="required">This is required!</div>
+            <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+            <!-- <div ng-message="minlength">That's too short! minimum length is 4</div> -->
+          </div>
         </md-input-container>
         <br>
-        <md-input-container class="md-block" required>
-          <label>Tags(comma separated)*</label>
-          <input type="text" ng-model="contentUploadedDetails.tags">
+        <md-input-container class="md-block">
+          <label>Tags(comma separated and hashtag prefixed)</label>
+          <input type="text" ng-model="contentUploadedDetails.tags" name="tags" minlength="4" required="">
+          <div ng-messages="uploadForm.tags.$error">
+            <div ng-message="required">This is required!</div>
+            <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+            <div ng-message="minlength">That's too short! minimum length is 4</div>
+          </div>
         </md-input-container>
         <!-- <br> -->
-        <md-input-container class="md-block" required>
+        <md-input-container class="md-block">
           <label>Comment</label>
-          <textarea ng-model="contentUploadedDetails.comment" max-rows="3"></textarea>
+          <textarea ng-model="contentUploadedDetails.comment" max-rows="3" name="comment"  minlength="8" required=""></textarea>
+          <div ng-messages="uploadForm.comment.$error">
+            <div ng-message="required">This is required!</div>
+            <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+            <div ng-message="minlength">That's too short! minimum length is 8</div>
+          </div>
         </md-input-container>
-        <md-button type="submit" class="md-accent md-raised" style="background-color: darkcyan;" ng-click="submitContentDetails(picFile)">Submit</md-button>
+        <md-button type="submit" ng-disabled="uploadForm.$invalid" class="md-accent md-raised" style="background-color: darkcyan;" ng-click="submitContentDetails(picFile)">Submit</md-button>
       </div>
     </div>
   </div>

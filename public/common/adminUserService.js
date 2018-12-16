@@ -11,6 +11,18 @@ function adminUserService($http, $q) {
 
     return $http(req).then(successCallback, errorCallback);
   }
+  
+  //delete selected content card
+  this.adminUserDeleteOneCardContentRequest = function(id) {
+    console.log("what's in id for delete", id);
+    var req = {
+      method: 'DELETE',
+      url: '/user/admin/'+ id +'/deleteOneCardContent',
+      data: id
+    }
+
+    return $http(req).then(successCallback, errorCallback);
+  }
 
   //API response payload
   function successCallback(response) {

@@ -13,7 +13,7 @@ component('logIn', {
     $scope.signupPage = true;
     $scope.loginPage = false;
     $scope.cardTitle = "Sign up"
-
+    $scope.user = {};
     //to show login page when link for sign in is clicked
     $scope.loginPageLinkClicked = function() {
       //show login apage and hide signup page
@@ -83,6 +83,30 @@ component('logIn', {
     function userCredentialsPostRequestSuccess(response) {
       console.log("response in component post success", response);
 
+      //if no role, show successful sign up and redirect to login page
+      if (!response.data.role) {
+        //toast alert related code
+        var pinTo = $scope.getToastPosition();
+        var toast = $mdToast.simple()
+          .textContent(response.data.message)
+          // .action('UNDO')
+          .highlightAction(true)
+          .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.
+          .position(pinTo);
+
+        $mdToast.show(toast).then(function(response) {
+          if (response == 'ok') {
+            alert('You clicked the \'UNDO\' action.');
+          }
+        });
+
+        if (response.data.result != "user exists") {
+          setTimeout(function() {
+            $scope.loginPageLinkClicked();
+          }, 3000);
+        }
+      }
+
       //redirect to genericUser component
       if (response.data.role == "generic") {
         console.log("response.role", response.data.role);
@@ -102,8 +126,8 @@ component('logIn', {
           }
         });
 
-        setTimeout(function(){
-        $location.path("/portal/generic/");
+        setTimeout(function() {
+          $location.path("/portal/generic/");
         }, 3000);
       }
 
@@ -113,7 +137,7 @@ component('logIn', {
         //toast alert related code
         var pinTo = $scope.getToastPosition();
         var toast = $mdToast.simple()
-          .textContent(response.data.successMessage)
+          .textContent(response.data.message)
           // .action('UNDO')
           .highlightAction(true)
           .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.
@@ -125,8 +149,8 @@ component('logIn', {
           }
         });
 
-        setTimeout(function(){
-        $location.path("/portal/admin/");
+        setTimeout(function() {
+          $location.path("/portal/admin/");
         }, 3000);
       }
     }

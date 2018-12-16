@@ -7,7 +7,7 @@ module('adminUser').
 component('adminUser', {
   // Note: The URL is relative to our `index.html` file
   templateUrl: 'admin-user/admin-user.template.html',
-  controller: ['$scope', '$mdToast', 'Upload', 'adminUserService', function AdminUserController($scope, $mdToast, Upload, adminUserService) {
+  controller: ['$scope', '$mdToast', 'Upload', 'adminUserService', '$mdDialog', function AdminUserController($scope, $mdToast, Upload, adminUserService, $mdDialog) {
 
     //populate this from loadUploadedContent response
     $scope.Tags = [];
@@ -60,12 +60,12 @@ component('adminUser', {
       if ($scope.assemblyConstituenciesForDropdown.length > 0) {
         $scope.assemblyConstituenciesForDropdown = [];
       }
-      console.log("selected district", selectedDistrict);
+      // console.log("selected district", selectedDistrict);
       for (var i = 0; i < $scope.assemblyConstituencies[0][selectedDistrict].length; i++) {
         console.log("assembly constituency val for dropdown", $scope.assemblyConstituencies[0][selectedDistrict][i]);
         $scope.assemblyConstituenciesForDropdown.push($scope.assemblyConstituencies[0][selectedDistrict][i]);
       }
-      console.log("$scope.assemblyConstituenciesForDropdown", $scope.assemblyConstituenciesForDropdown);
+      // console.log("$scope.assemblyConstituenciesForDropdown", $scope.assemblyConstituenciesForDropdown);
     }
 
     //this function gets called when mouseleave card of uploaded content to show edit delete buttons
@@ -91,7 +91,7 @@ component('adminUser', {
     }
 
     function getContentUploadedSuccess(res) {
-      console.log("Success fully retrieved uploaded content, res", res);
+      // console.log("Success fully retrieved uploaded content, res", res);
       $scope.contentUploaded = res.data;
 
       //iterate over data.tags and push into $scope.Tags
@@ -103,7 +103,7 @@ component('adminUser', {
         }
       }
 
-      console.log("tags after being populated", $scope.Tags);
+      // console.log("tags after being populated", $scope.Tags);
 
       //update file format extensions
       for (var i = 0; i < $scope.contentUploaded.length; i++) {
@@ -130,6 +130,37 @@ component('adminUser', {
     }
 
     $scope.loadUploadedContent();
+    
+    //show dialog while deleting content
+    $scope.showDeleteConfirm = function(ev, content) {
+      // console.log("for id in content", content);
+    // Appending dialog to document.body to cover sidenav in docs app
+    var confirm = $mdDialog.confirm()
+          .title('Would you like to delete this?')
+          // .textContent('All of the banks have agreed to forgive you your debts.')
+          .ariaLabel('Delete Confirm')
+          .targetEvent(ev)
+          .ok('Yes')
+          .cancel('No');
+
+    $mdDialog.show(confirm).then(function() {
+       console.log('Successfully deleted', content._id);
+       //API to delete card by id
+       adminUserService.adminUserDeleteOneCardContentRequest(content._id).then(deleteContentSuccess, deleteContentFailed);
+     }, function() {
+       console.log('Failed to delete');
+     });
+    };
+    
+    function deleteContentSuccess(response){
+     console.log("Successfully deleted", response);
+     //reload content after successful deletion
+     $scope.loadUploadedContent();
+    }
+
+    function deleteContentFailed(response){
+     console.log("failed to deleted", response);
+    }
 
   }]
 });

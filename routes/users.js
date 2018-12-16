@@ -39,25 +39,7 @@ console.log("router is initialized");
 var portal_content = require('../controllers/portalContentController.js');
 
 /* POST users listing. */
-router.post('/uploadUserContent', upload = multer({
-  storage: storage,
-  fileFilter: function(req, file, callback) {
-    console.log("multer upload file info: " + JSON.stringify(file));
-
-    var ext = path.extname(file.originalname);
-    if (ext != null)
-      ext = ext.toLowerCase();
-
-    console.log("extension is", ext);
-
-    // if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
-    //   callback('File format/extension ' + ext + ' is not valid', false);
-    // } else {
-    //   callback(null, true);
-    // }
-  }
-}).single('file'),
-portal_content.save_portal_content);
+router.post('/uploadUserContent', portal_content.save_portal_content);
 
 router.post('/formupload', portal_content.upload_file);
 //above two routes are for file upload and saving uploaded details
@@ -73,5 +55,8 @@ router.get('/admin/:id/edit', portal_content.get_one_content);
 
 //get one by id for populating generic template
 router.put('/admin/:id/edit', portal_content.update_one_content);
+
+//delete on card content
+router.delete('/admin/:id/deleteOneCardContent', portal_content.delete_one_content);
 
 module.exports = router;

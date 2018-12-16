@@ -2,5 +2,6 @@
 angular.module('logIn', [
   'ngMaterial',
   'ngRoute',
-  'ngOnload'
+  'ngOnload',
+  'ngMessages'
 ]);

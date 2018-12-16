@@ -56,3 +56,7 @@
 body {
   background-image: linear-gradient(-90deg, #66a3ff, #7300e6);
 }
+
+.nobodybggradientForLoggedinUsers {
+  background-image: none
+}

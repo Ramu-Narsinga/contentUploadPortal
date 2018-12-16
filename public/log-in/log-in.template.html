@@ -9,43 +9,77 @@
       </md-card-title>
       <md-card-content layout="row" layout-align="space-between">
         <div ng-if=signupPage>
-          <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
-            <label style='left:2%'>Email</label>
-            <input type="text" ng-model="user.email">
-          </md-input-container>
+          <form name="signupForm">
+            <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
+              <label style='left:2%'>Email</label>
+              <input type="text" name='email' ng-model="user.email" minlength="4" required="">
+              <div ng-messages="signupForm.email.$error">
+                <div ng-message="required">This is required!</div>
+                <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+                <div ng-message="minlength">That's too short! minimum length is 4</div>
+              </div>
+            </md-input-container>
 
-          <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
-            <label style='left:2%'>Username</label>
-            <input type="text" ng-model="user.name">
-          </md-input-container>
 
-          <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
-            <label style='left:2%'>Password</label>
-            <input type="text" ng-model="user.password">
-          </md-input-container>
+            <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
+              <label style='left:2%'>Username</label>
+              <input type="text" name='username' ng-model="user.name" minlength="4" required="">
+              <div ng-messages="signupForm.username.$error">
+                <div ng-message="required">This is required!</div>
+                <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+                <div ng-message="minlength">That's too short! minimum length is 4</div>
+              </div>
+            </md-input-container>
 
-          <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
-            <label style='left:2%'>Re-enter Password</label>
-            <input type="text" ng-model="user.passwordConf">
-          </md-input-container>
+            <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
+              <label style='left:2%'>Password</label>
+              <input type="text" name='password' ng-model="user.password"  minlength="8" required="">
+              <div ng-messages="signupForm.password.$error">
+                <div ng-message="required">This is required!</div>
+                <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+                <div ng-message="minlength">That's too short! minimum length is 8</div>
+              </div>
+            </md-input-container>
 
-          <md-button class="md-primary" ng-click="userDetailsSubmitted()">Submit</md-button><a href ng-click="loginPageLinkClicked()">Already have an account? Sign In.</a>
+            <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
+              <label style='left:2%'>Re-enter Password</label>
+              <input type="text" name='passwordConf' ng-model="user.passwordConf" ng-pattern="{{user.password}}" minlength="8" required="">
+              <div ng-messages="signupForm.passwordConf.$error">
+                <div ng-message="required">This is required!</div>
+                <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+                <div ng-message="minlength">That's too short! minimum length is 8</div>
+                <div ng-message="pattern">Passwords don't match</div>
+              </div>
+            </md-input-container>
+
+            <md-button class="md-raised md-primary" ng-disabled="signupForm.$invalid" ng-click="userDetailsSubmitted()">Submit</md-button><a href ng-click="loginPageLinkClicked()">Already have an account? Sign In.</a>
+          </form>
         </div>
 
         <div ng-if=loginPage>
-          <br><br>
-          <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
-            <label style='left:2%'>Email</label>
-            <input type="text" ng-model="userlogin.email">
-          </md-input-container>
+          <form name="loginForm">
+            <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
+              <label style='left:2%'>Email</label>
+              <input type="text" ng-model="userlogin.email" name="email" minlength="4" required="">
+              <div ng-messages="loginForm.email.$error">
+                <div ng-message="required">This is required!</div>
+                <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+                <div ng-message="minlength">That's too short! minimum length is 4</div>
+              </div>
+            </md-input-container>
 
-          <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
-            <label style='left:2%'>Password</label>
-            <input type="text" ng-model="userlogin.password">
-          </md-input-container>
+            <md-input-container class='col-md-12 col-sm-12 col-xs-12'>
+              <label style='left:2%'>Password</label>
+              <input type="text" ng-model="userlogin.password" name="password" minlength="8" required="">
+              <div ng-messages="loginForm.password.$error">
+                <div ng-message="required">This is required!</div>
+                <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+                <div ng-message="minlength">That's too short! minimum length is 8</div>
+              </div>
+            </md-input-container>
 
-          <md-button class="md-primary" ng-click="loginButtonSubmitted(userlogin.email, userlogin.password)">Submit</md-button><a href ng-click="signUpPageLinkClicked()">Sign up?</a>
-
+            <md-button class="md-raised md-primary" ng-disabled="loginForm.$invalid" ng-click="loginButtonSubmitted(userlogin.email, userlogin.password)">Submit</md-button><a href ng-click="signUpPageLinkClicked()">Sign up?</a>
+          </form>
         </div>
       </md-card-content>
     </md-card>

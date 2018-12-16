@@ -87,7 +87,30 @@ component('genericUser', {
     //this function gets called when submit is called to use a service and send a http request
     $scope.submitContentDetails = function(file) {
       console.log("file", file, $scope.picFile);
-      $scope.contentUploadedDetails.uploaded_file_name = $scope.picFile.name;
+      var noFileChosen = false;
+      if ($scope.picFile) {
+        $scope.contentUploadedDetails.uploaded_file_name = $scope.picFile.name;
+      }
+      if (!$scope.picFile) {
+        if (!$scope.idForUpdate) {
+          console.log("this is consider first time update, no id and no file uploaded from genric user component")
+          var noFileChosen = true;
+          //toast alert related code
+          var pinTo = $scope.getToastPosition();
+          var toast = $mdToast.simple()
+            .textContent('PLease select a file.')
+            // .action('UNDO')
+            .highlightAction(true)
+            .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.
+            .position(pinTo);
+
+          $mdToast.show(toast).then(function(response) {
+            if (response == 'ok') {
+              alert('You clicked the \'UNDO\' action.');
+            }
+          });
+        }
+      }
       $scope.contentUploadedDetails = $scope.contentUploadedDetails;
       console.log("contentUploadedDetails", $scope.contentUploadedDetails);
       //assign ng-bind data to the JSON sent in http request
@@ -105,7 +128,9 @@ component('genericUser', {
         genericUserService.genericUserPutRequestForEdit($scope.idForUpdate, $scope.contentUploadedDetails).then(getEditableRequestSuccess, getEditableRequestError);;
       } else {
         //disable submit if wrong file format is uploaded //todo if evreything is perfect from front end then call http request
-        genericUserService.genericUserContentPostRequest($scope.contentUploadedDetails).then(postRequestSuccess, postRequestError);
+        if (!noFileChosen) {
+          genericUserService.genericUserContentPostRequest($scope.contentUploadedDetails).then(postRequestSuccess, postRequestError);
+        }
       }
     }
 
@@ -114,7 +139,7 @@ component('genericUser', {
       //toast alert related code
       var pinTo = $scope.getToastPosition();
       var toast = $mdToast.simple()
-        .textContent('Data uploaded successfully, you can upload more')
+        .textContent('Data is uploaded successfully, you can upload more')
         // .action('UNDO')
         .highlightAction(true)
         .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.

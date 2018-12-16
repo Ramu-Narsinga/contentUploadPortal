@@ -49,7 +49,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-4 col-sm-12 col-xs-4" ng-repeat="content in contentUploaded | filter:{tags:search.Tag} | filter:{parliament_constituency:search.ParliamentConstituency} | filter:{assembly_constituency:search.AssemblyConstituency}" ng-init="content.hideEditButton=true;content.hideDeleteButton=true">
+    <div class="col-md-4 col-sm-12 col-xs-4" ng-repeat="content in contentUploaded | filter:{district:search.selectedDistrict} | filter:{tags:search.Tag} | filter:{parliament_constituency:search.ParliamentConstituency} | filter:{assembly_constituency:search.AssemblyConstituency}" ng-init="content.hideEditButton=true;content.hideDeleteButton=true">
       <md-card style="background-color: #e6e6ff;" ng-mouseenter="showEditDeleteButtons(content)" ng-mouseleave="hideEditDeleteButtons(content)">
         <img src="/uploads/{{content.uploaded_file_name}}" class="md-card-image cardImage" alt="image/video N/A" ng-if="content.imageFileType">
         <video width="100%" height="250" style="position:relative;bottom:8px" preload="auto" controls ng-if="content.videoFileType">
@@ -65,7 +65,7 @@
         </md-card-content>
         <md-card-footer>
           <a href="#!/portal/admin/{{content._id}}/edit/"><md-button ng-hide="content.hideEditButton" class="md-raised md-primary">Edit</md-button></a>
-          <md-button ng-hide="content.hideDeleteButton" class="md-raised md-warn" style="background-color:#FF0000">Delete</md-button>
+          <md-button ng-hide="content.hideDeleteButton" class="md-raised md-warn" style="background-color:#FF0000" ng-click="showDeleteConfirm($event, content)">Delete</md-button>
         </md-card-footer>
       </md-card>
     </div>

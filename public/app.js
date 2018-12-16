@@ -44,9 +44,13 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
             } else if (resp == null) {
                 $location.path("/login");
             } else if (resp.role == "generic") { // to prevent general user from accessing dashboard
+                
                 $rootScope.userRole = resp.role;
                 console.log("what's in $location.path()", $location.path());
                 if ($location.path() == "/portal/admin/") {
+                    $location.path("/portal/generic/");
+                }
+                if ($location.path() == "/login") {
                     $location.path("/portal/generic/");
                 }
             } else {
