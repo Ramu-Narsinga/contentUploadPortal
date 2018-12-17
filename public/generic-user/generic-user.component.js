@@ -10,7 +10,7 @@ component('genericUser', {
   controller: ['$scope', '$mdToast', 'Upload', 'genericUserService', '$routeParams', function GenericUserController($scope, $mdToast, Upload, genericUserService, $routeParams) {
 
     $scope.idForUpdate = $routeParams.id;
-
+    var formForEditIsSubmitted = false;
     //JSON that contains all details
     $scope.contentUploadedDetails = {};
     $scope.hideUploadContentForm = false;
@@ -124,6 +124,8 @@ component('genericUser', {
       }
       //on submit if id exists it is an edit from admin user
       if ($scope.idForUpdate) {
+        // with id url form is submitted
+        formForEditIsSubmitted = true;
         //call a service to find by id and populating data
         genericUserService.genericUserPutRequestForEdit($scope.idForUpdate, $scope.contentUploadedDetails).then(getEditableRequestSuccess, getEditableRequestError);;
       } else {
@@ -136,20 +138,22 @@ component('genericUser', {
 
     function postRequestSuccess(response) {
       console.log("response in component post success", response);
-      //toast alert related code
-      var pinTo = $scope.getToastPosition();
-      var toast = $mdToast.simple()
-        .textContent('Data is uploaded successfully, you can upload more')
-        // .action('UNDO')
-        .highlightAction(true)
-        .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.
-        .position(pinTo);
+      if (formForEditIsSubmitted) {
+        //toast alert related code
+        var pinTo = $scope.getToastPosition();
+        var toast = $mdToast.simple()
+          .textContent('Data is uploaded successfully, you can upload more')
+          // .action('UNDO')
+          .highlightAction(true)
+          .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.
+          .position(pinTo);
 
-      $mdToast.show(toast).then(function(response) {
-        if (response == 'ok') {
-          alert('You clicked the \'UNDO\' action.');
-        }
-      });
+        $mdToast.show(toast).then(function(response) {
+          if (response == 'ok') {
+            alert('You clicked the \'UNDO\' action.');
+          }
+        });
+      }
     }
 
     function postRequestError(response) {
@@ -163,10 +167,24 @@ component('genericUser', {
     }
 
     function getEditableRequestSuccess(response) {
-      console.log("getEditableRequestSuccess response", response);
+      console.log("getEditableRequestSuccess response for edit in admin", response);
       $scope.contentUploadedDetails = response.data;
       console.log("$scope.contentUploadedDetails", $scope.contentUploadedDetails);
       $scope.setParliamentAndAssemblyDropDownValues($scope.contentUploadedDetails.district);
+      //toast alert related code
+      var pinTo = $scope.getToastPosition();
+      var toast = $mdToast.simple()
+        .textContent('Data is updated successfully')
+        // .action('UNDO')
+        .highlightAction(true)
+        .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.
+        .position(pinTo);
+
+      $mdToast.show(toast).then(function(response) {
+        if (response == 'ok') {
+          alert('You clicked the \'UNDO\' action.');
+        }
+      });
     }
 
     function getEditableRequestError(response) {

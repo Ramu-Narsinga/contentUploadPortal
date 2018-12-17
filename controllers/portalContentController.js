@@ -151,7 +151,7 @@ exports.update_one_content = function(req, res) {
         "tags": req.body.tags,
         "comment": req.body.comment
       }
-    })
+    }, {new: true})
     .exec(function(err, list) {
       if (err) {
         return next(err);
