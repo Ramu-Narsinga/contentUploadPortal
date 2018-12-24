@@ -1,10 +1,73 @@
-<md-card>
- <img src="card-image.png" class="md-card-image" alt="image caption">
- <md-card-content>
-   <h2>Card headline</h2>
-   <p>Card content</p>
- </md-card-content>
- <md-card-footer>
-   Card footer
- </md-card-footer>
-</md-card>
+<md-toolbar class="black" layout="row">
+  <h1 class="md-toolbar-tools thin">Admin Dashboard</h1>
+  <a href="/logout"><md-button class="md-accent md-raised" style="height:5px;width:5px">Log Out</md-button></a>
+</md-toolbar>
+<div class="container-fluid" style="background-color:#ecf2f9;">
+  <div class="row" style="background-color:#d9f2d9; padding:1%">
+    <div class="col-xs-12 col-md-12 col-sm-12">
+      <p>Search By:</p><span><i class="fa fa-chevron-circle-down" style="cursor:pointer;font-size: 24px;position: absolute;right: 0px;top: 0px;" ng-click="showDropDown(toggle)" ng-class="{'rotatedCSS' : !rotated}"></i></span>
+    </div>
+    <div class="col-xs-3 col-md-6 col-sm-12" ng-hide="hideFilterDiv">
+      <md-input-container class="md-block" flex-gt-sm="" required>
+        <label>District</label>
+        <md-select ng-model="search.selectedDistrict" ng-change="setParliamentAndAssemblyDropDownValues(search.selectedDistrict)">
+          <md-option ng-repeat="district in Districts" value="{{district}}">
+            {{district}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+    <div class="col-xs-3 col-md-6 col-sm-12" ng-hide="hideFilterDiv">
+      <md-input-container class="md-block" flex-gt-sm="" required>
+        <label>Assembly Constituency</label>
+        <md-select ng-model="search.AssemblyConstituency">
+          <md-option ng-repeat="assemblyConstituency in assemblyConstituenciesForDropdown" value="{{assemblyConstituency}}">
+            {{assemblyConstituency}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+    <div class="col-xs-3 col-md-6 col-sm-12" ng-hide="hideFilterDiv">
+      <md-input-container class="md-block" flex-gt-sm="" required>
+        <label>Parliament Constituency</label>
+        <md-select ng-model="search.ParliamentConstituency">
+          <md-option ng-repeat="ParliamentConstituency in parliamentConstituencies" value="{{ParliamentConstituency}}">
+            {{ParliamentConstituency}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+    <div class="col-xs-3 col-md-6 col-sm-12" ng-hide="hideFilterDiv">
+      <md-input-container class="md-block" flex-gt-sm="" required>
+        <label>Tags</label>
+        <md-select ng-model="search.Tag">
+          <md-option ng-repeat="Tag in Tags track by $index" value="{{Tag}}">
+            {{Tag}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 col-sm-12 col-xs-4" ng-repeat="content in contentUploaded | filter:{district:search.selectedDistrict} | filter:{tags:search.Tag} | filter:{parliament_constituency:search.ParliamentConstituency} | filter:{assembly_constituency:search.AssemblyConstituency}" ng-init="content.hideEditButton=true;content.hideDeleteButton=true">
+      <md-card style="background-color: #e6e6ff;" ng-mouseenter="showEditDeleteButtons(content)" ng-mouseleave="hideEditDeleteButtons(content)">
+        <img src="/uploads/{{content.uploaded_file_name}}" class="md-card-image cardImage" alt="image/video N/A" ng-if="content.imageFileType">
+        <video width="100%" height="250" style="position:relative;bottom:8px" preload="auto" controls ng-if="content.videoFileType">
+          <source src="/uploads/{{content.uploaded_file_name}}" type="video/{{content.videoFileExtension}}">
+          Your browser does not support the video tag.
+        </video>
+        <md-card-content>
+          <p><b>District:</b> {{content.district}}</p>
+          <p><b>Assembly Constituency:</b> {{content.assembly_constituency}}</p>
+          <p><b>Parliament Constituency:</b> {{content.parliament_constituency}}</p>
+          <p><b>Tags:</b> {{content.tags}}</p>
+          <p><b>Comment:</b> {{content.comment}}</p>
+        </md-card-content>
+        <md-card-footer>
+          <a href="#!/portal/admin/{{content._id}}/edit/"><md-button ng-hide="content.hideEditButton" class="md-raised md-primary">Edit</md-button></a>
+          <md-button ng-hide="content.hideDeleteButton" class="md-raised md-warn" style="background-color:#FF0000" ng-click="showDeleteConfirm($event, content)">Delete</md-button>
+        </md-card-footer>
+      </md-card>
+    </div>
+  </div>
+</div>

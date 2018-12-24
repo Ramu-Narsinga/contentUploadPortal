@@ -7,51 +7,50 @@ module('genericUser').
 component('genericUser', {
   // Note: The URL is relative to our `index.html` file
   templateUrl: 'generic-user/generic-user.template.html',
-  controller: ['$scope', '$mdToast', 'Upload', 'genericUserService', function GenericUserController($scope, $mdToast, Upload, genericUserService) {
+  controller: ['$scope', '$mdToast', 'Upload', 'genericUserService', '$routeParams', function GenericUserController($scope, $mdToast, Upload, genericUserService, $routeParams) {
+
+    $scope.idForUpdate = $routeParams.id;
+    var formForEditIsSubmitted = false;
     //JSON that contains all details
     $scope.contentUploadedDetails = {};
     $scope.hideUploadContentForm = false;
-    $scope.hideUploadedContentCards = true;
-
-    //this function gets called when mouseleave card of uploaded content to show edit delete buttons
-    $scope.hideEditDeleteButtons = function(content) {
-      // console.log("content", content, "mouse leave hide",$scope.content.hideEditButton, "show", $scope.content.hideEditButton);
-      content.hideEditButton = true;
-      content.hideDeleteButton = true;
-    }
-
-    //this function to hide edit/delete buttons
-    $scope.showEditDeleteButtons = function(content) {
-      // console.log("content", content, "mouseover hide",$scope.content.hideEditButton, "show", $scope.content.hideEditButton);
-      content.hideEditButton = false;
-      content.hideDeleteButton = false;
-    }
+    $scope.assemblyConstituenciesForDropdown = [];
+    $scope.parliamentConstituenciesForDropdown = [];
 
     //dropdown for districts
-    $scope.states = ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
-      'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' +
-      'WY').split(' ').map(function(state) {
-      return {
-        abbrev: state
-      };
-    });
+    $scope.Districts = [
+      "Anantapur",
+      "Chittoor",
+      "East Godavari",
+      "Guntur",
+      "YSR Kadapa",
+      "Krishna",
+      "Kurnool",
+      "Nellore",
+      "Prakasam",
+      "Srikakulam",
+      "Visakhapatnam",
+      "Vizianagaram",
+      "West Godavari"
+    ];
 
-    $scope.loadUploadedContent = function() {
-      console.log("in loadUploadedContent");
-      $scope.hideUploadContentForm = true;
-      $scope.hideUploadedContentCards = false;
-      //to do, write service code to get all the uploaded and bind it
-      genericUserService.genericUserGetContentUploaded().then(getContentUploadedSuccess, getContentUploadedFailed);
-    }
+    //dropdown for assembly constituency
+    $scope.assemblyConstituencies = assemblyConstituenciesExported;
 
-    function getContentUploadedSuccess(res) {
-      console.log("Success fully retrieved uploaded content, res", res);
-      $scope.contentUploaded = res.data;
-    }
+    //parliamentary constituencies
+    $scope.parliamentConstituencies = parliamentConstituenciesExported;
 
-    function getContentUploadedFailed(response) {
-      console.log("Failed to retrieve uploaded content");
-      return $q.reject(response);
+    //ths gets called when a distruct is chosen to populate assembly and parliament contituency dropdowns
+    $scope.setParliamentAndAssemblyDropDownValues = function(district) {
+      if ($scope.assemblyConstituenciesForDropdown.length > 0) {
+        $scope.assemblyConstituenciesForDropdown = [];
+      }
+      // console.log("selected district", district);
+      for (var i = 0; i < $scope.assemblyConstituencies[0][district].length; i++) {
+        // console.log("assembly constituency val for dropdown", $scope.assemblyConstituencies[0][district][i]);
+        $scope.assemblyConstituenciesForDropdown.push($scope.assemblyConstituencies[0][district][i]);
+      }
+      // console.log("$scope.assemblyConstituenciesForDropdown", $scope.assemblyConstituenciesForDropdown);
     }
 
     //for taost alerts, set up toast position code
@@ -84,46 +83,57 @@ component('genericUser', {
 
       last = angular.extend({}, current);
     }
-    // // toast related code extracted from codepen documentation
-    // // to show toast alerts
-    // var pinTo = $scope.getToastPosition();
-    // var toast = $mdToast.simple()
-    //   .textContent("Please upload image with 'png/jpeg/jpg/gif' extension")
-    //   .action('UNDO')
-    //   .highlightAction(true)
-    //   .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.
-    //   .position(pinTo);
-
-    //this function gets called when a file is succesfully uploaded
-    // $scope.fileAddedFunction = function() {
-    // console.log("fileAddedFunction");
-    // console.log("file name", $files[0].file.name)
-    // if ($files.length > 0) {
-    //   $scope.contentUploadedDetails.UploadedfileName = $files[0].file.name;
-    //split to get the extension and show toaster alert and remove incompatible file Uploaded
-    //   var fileExtension = $files[0].file.type.split("/");
-    //   console.log("fileExtension[1]", fileExtension[1]);
-    // }
-
-    // if (fileExtension[1] != 'png' && fileExtension[1] != 'jpg' && fileExtension[1] != 'jpeg' && fileExtension[1] != 'gif') {
-    //   console.log("fileExtension is incompatible, remove the uploaded file and send toast", fileExtension[1]);
-    //   $flow.cancel();
-    //   $mdToast.show(toast).then(function(response) {
-    //     if (response == 'ok') {
-    //       alert('You clicked the \'UNDO\' action.');
-    //     }
-    //   });
-    // }
-    // }
 
     //this function gets called when submit is called to use a service and send a http request
     $scope.submitContentDetails = function(file) {
       console.log("file", file, $scope.picFile);
-      $scope.contentUploadedDetails.UploadedfileName = $scope.picFile.name;
+      var noFileChosen = false;
+      if ($scope.picFile) {
+        $scope.contentUploadedDetails.uploaded_file_name = $scope.picFile.name;
+      }
+      if (!$scope.picFile) {
+        if (!$scope.idForUpdate) {
+          console.log("this is consider first time update, no id and no file uploaded from genric user component")
+          var noFileChosen = true;
+          //toast alert related code
+          var pinTo = $scope.getToastPosition();
+          var toast = $mdToast.simple()
+            .textContent('PLease select a file.')
+            // .action('UNDO')
+            .highlightAction(true)
+            .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.
+            .position(pinTo);
+
+          $mdToast.show(toast).then(function(response) {
+            if (response == 'ok') {
+              alert('You clicked the \'UNDO\' action.');
+            }
+          });
+        }
+      }
+      $scope.contentUploadedDetails = $scope.contentUploadedDetails;
       console.log("contentUploadedDetails", $scope.contentUploadedDetails);
       //assign ng-bind data to the JSON sent in http request
       // console.log("what's in filled data", $scope.contentUploadedDetails, "$scope.comment", $scope.contentUploadedDetails.comment);
-      genericUserService.genericUserContentPostRequest($scope.contentUploadedDetails).then(postRequestSuccess, postRequestError);
+
+      //make tags in JSON an array
+      if (!Array.isArray($scope.contentUploadedDetails.tags)) {
+        console.log($scope.contentUploadedDetails.tags.split(','));
+        var tagsArray = $scope.contentUploadedDetails.tags.split(',');
+        $scope.contentUploadedDetails.tags = tagsArray;
+      }
+      //on submit if id exists it is an edit from admin user
+      if ($scope.idForUpdate) {
+        // with id url form is submitted
+        formForEditIsSubmitted = true;
+        //call a service to find by id and populating data
+        genericUserService.genericUserPutRequestForEdit($scope.idForUpdate, $scope.contentUploadedDetails).then(getEditableRequestSuccess, getEditableRequestError);;
+      } else {
+        //disable submit if wrong file format is uploaded //todo if evreything is perfect from front end then call http request
+        if (!noFileChosen) {
+          genericUserService.genericUserContentPostRequest($scope.contentUploadedDetails).then(postRequestSuccess, postRequestError);
+        }
+      }
     }
 
     function postRequestSuccess(response) {
@@ -131,7 +141,7 @@ component('genericUser', {
       //toast alert related code
       var pinTo = $scope.getToastPosition();
       var toast = $mdToast.simple()
-        .textContent('Data uploaded successfully, you can upload more')
+        .textContent('Data is uploaded successfully, you can upload more')
         // .action('UNDO')
         .highlightAction(true)
         .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.
@@ -148,5 +158,35 @@ component('genericUser', {
       console.log("error in component post request", response);
     }
 
+    console.log("$scope.idForUpdate", $scope.idForUpdate);
+    if ($scope.idForUpdate) {
+      //call a service to find by id and populating data
+      genericUserService.genericUserGetRequestForEdit($scope.idForUpdate).then(getEditableRequestSuccess, getEditableRequestError);;
+    }
+
+    function getEditableRequestSuccess(response) {
+      console.log("getEditableRequestSuccess response for edit in admin", response);
+      $scope.contentUploadedDetails = response.data;
+      console.log("$scope.contentUploadedDetails", $scope.contentUploadedDetails);
+      $scope.setParliamentAndAssemblyDropDownValues($scope.contentUploadedDetails.district);
+      //toast alert related code
+      var pinTo = $scope.getToastPosition();
+      var toast = $mdToast.simple()
+        .textContent('Data is updated successfully')
+        // .action('UNDO')
+        .highlightAction(true)
+        .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.
+        .position(pinTo);
+
+      $mdToast.show(toast).then(function(response) {
+        if (response == 'ok') {
+          alert('You clicked the \'UNDO\' action.');
+        }
+      });
+    }
+
+    function getEditableRequestError(response) {
+      console.log("response of error", response);
+    }
   }]
 });

@@ -6,8 +6,11 @@ angular.module('myApp', [
   'ngMaterial',
   'flow',
   'ngFileUpload',
+  'ngOnload',
+  'ngCookies',
   'genericUser',
-  'adminUser'
+  'adminUser',
+  'logIn'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   // $locationProvider.hashPrefix('!');
@@ -19,52 +22,47 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
   when('/portal/admin/', {
     template: '<admin-user></admin-user>'
   }).
+  when('/portal/admin/:id/edit/',{
+    template: '<generic-user></generic-user>'
+  }).
+  when('/login', {
+    template: '<log-in></log-in>'
+  }
+  ).
   otherwise({
-    redirectTo: '/portal/generic/'
+    redirectTo: '/login'
   });
+}])
+.run(['$rootScope', '$location', function($rootScope, $location) {
+
+    $rootScope.$on('$routeChangeStart', function(event) {
+
+        $.get("/isAuthenticated", function(resp) {
+            console.log("response about userId from server in routing and authenticating:" + JSON.stringify(resp));
+            if (resp != null && resp.result != "Success") {
+                $location.path("/login");
+            } else if (resp == null) {
+                $location.path("/login");
+            } else if (resp.role == "generic") { // to prevent general user from accessing dashboard
+                
+                $rootScope.userRole = resp.role;
+                console.log("what's in $location.path()", $location.path());
+                if ($location.path() == "/portal/admin/") {
+                    $location.path("/portal/generic/");
+                }
+                if ($location.path() == "/login") {
+                    $location.path("/portal/generic/");
+                }
+            } else {
+                $rootScope.userRole = resp.role;
+                if (resp.role == "admin") {
+                    if ($location.path() == "/login") {
+                        $location.path("/portal/admin");
+                    }
+                }
+            }
+        });
+
+    });
+
 }]);
-// .
-// //generic-user-service is application wide injectable
-// factory('genericUserService', ["$http", function($http) {
-//   // function genericUseContentrPostRequest($http) {
-//   //   console.log("genericUseContentrPostRequest");
-//   // }
-//   var factory = {};
-//
-//   factory.genericUserContentPostRequest = function(contentUploadedDetails) {
-//     console.log("genericUseContentrPostRequest", contentUploadedDetails);
-//     var req = {
-//       method: 'POST',
-//       url: '/user/uploadUserContent',
-//       data: contentUploadedDetails
-//     }
-//
-//     $http(req).then(factory.successCallback, factory.errorCallback);
-//   }
-//
-//   factory.genericUserGetContentUploaded = function() {
-//     var req = {
-//       method: 'GET',
-//       url: '/user/generic/getContentUploaded'
-//     }
-//
-//     // $http(req).then(factory.successCallback, factory.errorCallback);
-//     return $http(req).then(factory.successCallback, factory.errorCallback);
-//   }
-//
-//   factory.successCallback = function(response) {
-//     // $scope.status = response.status;
-//     // $scope.data = response.data;
-//     console.log("success", response);
-//     return response;
-//   }
-//
-//   factory.errorCallback = function(response) {
-//     // $scope.data = response.data || 'Request failed';
-//     // $scope.status = response.status;
-//     console.log("error", response);
-//     return ($q.reject(response));
-//   }
-//
-//   return factory;
-// }]);

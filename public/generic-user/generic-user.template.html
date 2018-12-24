@@ -1,74 +1,109 @@
-<md-toolbar class="black" layout="row">
-  <h1 class="md-toolbar-tools thin">Content Uploading Portal
-    <span>
-      <md-button ng-click="loadUploadedContent()">View Uploads</md-button>
-    </span>
-  </h1>
-</md-toolbar>
-<br>
-<form name="uploadForm" action="/user/formupload" method="post" enctype="multipart/form-data" ng-hide="hideUploadContentForm">
+<form name="uploadForm" style="background-color: #ecf2f9;height: 100%;" action="/user/formupload" method="post" enctype="multipart/form-data" ng-hide="hideUploadContentForm">
+  <md-toolbar class="black" layout="row">
+    <h1 class="md-toolbar-tools thin">Upload Content</h1>
+    <a href="/logout"><md-button class="md-accent md-raised" style="height:5px;width:5px">Log Out</md-button></a>
+  </md-toolbar>
+  <br>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-6">
-        <!--
-      <md-content layout-padding>
-        <md-button class="md-raised">Select file to upload</md-button>
-        <div flow-file-success="$file.msg = $message" flow-files-submitted="$flow.upload()" flow-init="{target: '/upload'}">
-        </div>
-      </md-content> -->
 
+      <div class="col-xs-6 col-md-6 col-sm-12">
         <md-toolbar md-scroll-shrink="">
-          <div class="md-toolbar-tools">Please Upload A File</div>
-
-          <md-content layout-padding>
-            <input type="file" ngf-select ng-model="picFile" name="file" required">
-            <!-- <i ng-show="uploadForm.file.$error.required">*required</i><br>
-            <i ng-show="uploadForm.file.$error.maxSize">File too large
-              {{errorFile.size / 1000000|number:1}}MB: max 2M</i> -->
-            <img ng-show="uploadForm.file.$valid" ngf-thumbnail="picFile" class="thumb"> <button ng-click="picFile = null" ng-show="picFile">Remove</button>
+          <div class="md-toolbar-tools" style="background-color: darkcyan;color: white;">Please Upload A File</div>
+          <md-content layout-padding style="background-color: #e6f3ff;">
+            <div class="input-group">
+              <input type="file" style="width:100%;background-color: aliceblue;" ngf-select ng-model="picFile" name="file" requir="">
+              <div ng-messages="uploadForm.file.$error">
+                <div ng-message="required">This is required!</div>
+                <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+                <!-- <div ng-message="minlength">That's too short! minimum length is 4</div> -->
+              </div>
+            </div>
+            <img ng-show="uploadForm.file.$valid" ngf-thumbnail="picFile" class="thumb">
+            <br>
+            <button class="btn btn-danger" ng-click="picFile = null" ng-show="picFile">Remove</button>
           </md-content>
         </md-toolbar>
+        <br>
       </div>
-      <div class="col-md-6">
-        <md-input-container class="md-block" flex-gt-sm="" required>
+
+      <div class="col-xs-6 col-md-6 col-sm-12">
+        <md-input-container class="md-block" flex-gt-sm="">
           <label>District</label>
-          <md-select ng-model="contentUploadedDetails.district">
-            <md-option ng-repeat="state in states" value="{{state.abbrev}}">
-              {{state.abbrev}}
+          <md-select ng-model="contentUploadedDetails.district" ng-change="setParliamentAndAssemblyDropDownValues(contentUploadedDetails.district)" name="district" required="">
+            <md-option ng-repeat="district in Districts" value="{{district}}">
+              {{district}}
             </md-option>
           </md-select>
+          <div ng-messages="uploadForm.district.$error">
+            <div ng-message="required">This is required!</div>
+            <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+            <!-- <div ng-message="minlength">That's too short! minimum length is 4</div> -->
+          </div>
         </md-input-container>
         <br>
         <md-input-container class="md-block" flex-gt-sm="" required>
-          <label>Constituency</label>
-          <md-select ng-model="contentUploadedDetails.constituency">
-            <md-option ng-repeat="state in states" value="{{state.abbrev}}">
-              {{state.abbrev}}
+          <label>Assembly Constituency</label>
+          <md-select ng-model="contentUploadedDetails.assembly_constituency" name="ac" required="">
+            <md-option ng-repeat="assembly_constituency in assemblyConstituenciesForDropdown" value="{{assembly_constituency}}">
+              {{assembly_constituency}}
             </md-option>
           </md-select>
+          <div ng-messages="uploadForm.ac.$error">
+            <div ng-message="required">This is required!</div>
+            <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+            <!-- <div ng-message="minlength">That's too short! minimum length is 4</div> -->
+          </div>
         </md-input-container>
         <br>
-        <md-input-container class="md-block" required>
-          <label>Tags</label>
-          <input type="text" ng-model="contentUploadedDetails.tags">
+        <md-input-container class="md-block" flex-gt-sm="">
+          <label>Parliament Constituency</label>
+          <md-select ng-model="contentUploadedDetails.parliament_constituency"  name="pc" required="">
+            <md-option ng-repeat="parliament_constituency in parliamentConstituencies" value="{{parliament_constituency}}">
+              {{parliament_constituency}}
+            </md-option>
+          </md-select>
+          <div ng-messages="uploadForm.pc.$error">
+            <div ng-message="required">This is required!</div>
+            <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+            <!-- <div ng-message="minlength">That's too short! minimum length is 4</div> -->
+          </div>
         </md-input-container>
         <br>
-        <md-input-container class="md-block" required>
+        <md-input-container class="md-block">
+          <label>Tags(comma separated and hashtag prefixed)</label>
+          <input type="text" ng-model="contentUploadedDetails.tags" name="tags" minlength="4" required="">
+          <div ng-messages="uploadForm.tags.$error">
+            <div ng-message="required">This is required!</div>
+            <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+            <div ng-message="minlength">That's too short! minimum length is 4</div>
+          </div>
+        </md-input-container>
+        <!-- <br> -->
+        <md-input-container class="md-block">
           <label>Comment</label>
-          <textarea ng-model="contentUploadedDetails.comment" max-rows="4"></textarea>
+          <textarea ng-model="contentUploadedDetails.comment" max-rows="3" name="comment"  minlength="8" required=""></textarea>
+          <div ng-messages="uploadForm.comment.$error">
+            <div ng-message="required">This is required!</div>
+            <!-- <div ng-message="md-maxlength">That's too long!</div> -->
+            <div ng-message="minlength">That's too short! minimum length is 8</div>
+          </div>
         </md-input-container>
-        <br>
-        <md-button type="submit" class="md-accent md-raised" ng-click="submitContentDetails(picFile)">Submit</md-button>
+        <md-button type="submit" ng-disabled="uploadForm.$invalid" class="md-accent md-raised" style="background-color: darkcyan;" ng-click="submitContentDetails(picFile)">Submit</md-button>
       </div>
     </div>
   </div>
 </form>
 
-<div class="container-fluid" ng-hide="hideUploadedContentCards">
+<!-- <div class="container-fluid" ng-hide="hideUploadedContentCards">
   <div class="row">
     <div class="col-md-4 col-sm-12 col-xs-4" ng-repeat="content in contentUploaded" ng-init="content.hideEditButton=true;content.hideDeleteButton=true">
-      <md-card ng-mouseenter="showEditDeleteButtons(content)" ng-mouseleave="hideEditDeleteButtons(content)">
-        <img src="/uploads/{{content.uploaded_file_name}}" class="md-card-image cardImage" alt="image N/A">
+      <md-card ng-mouseenter="showEditDeleteButtons(content)" ng-mouseleave="hideEditDeleteButtons(content)" ng-init="getFileExtension(content)">
+        <img src="/uploads/{{content.uploaded_file_name}}" class="md-card-image cardImage" alt="image/video N/A" ng-show="{{imageFileType}}">
+        <video width="100%" height="250" preload="auto" controls ng-show="{{videoFileType}}">
+          <source src="/uploads/{{content.uploaded_file_name}}" type="video/{{videoFileExtension}}">
+          Your browser does not support the video tag.
+        </video>
         <md-card-content>
           <p><b>District:</b> {{content.district}}</p>
           <p><b>Constituency:</b> {{content.constituency}}</p>
@@ -82,4 +117,4 @@
       </md-card>
     </div>
   </div>
-</div>
+</div> -->

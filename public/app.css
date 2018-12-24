@@ -28,3 +28,35 @@
   width: 100%;
   height: 250px;
 }
+
+.plusButton{
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+.rotatedCSS {
+  transform: rotate(180deg); /* Equal to rotateZ(45deg) */
+  /*background-color: pink;*/
+}
+
+#loginCardCss {
+  width:45% !important;
+  position: absolute;
+  margin: auto;
+  top: 5%;
+  right: 0px;
+  left:0px;
+}
+
+.LogininputLabelClass{
+  left:6px;
+}
+
+body {
+  background-image: linear-gradient(-90deg, #66a3ff, #7300e6);
+}
+
+.nobodybggradientForLoggedinUsers {
+  background-image: none
+}
